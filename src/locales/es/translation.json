@@ -1,3 +1,17 @@
 {
-    
+    "index": "Inicio",
+    "surveys": "Administrar Encuestas",
+    "categories": "Administrar Categorías",
+    "questions": "Administrar Preguntas",
+    "answers": "Administrar Respuestas",
+    "survey_assignment": "Asignación De Encuestas",
+    "users": "Administrar Usuarios",
+    "roles": "Administrar Roles",
+    "profile": "Perfil",
+    "theme": "Tema",
+    "white": "Claro",
+    "dark": "Oscuro",
+    "language": "Lenguaje",
+    "logout": "Cerrar Sesión",
+    "close": "Cerrar"
 }

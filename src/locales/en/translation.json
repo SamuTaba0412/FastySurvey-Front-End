@@ -1,3 +1,17 @@
 {
-    
+    "index": "Main Page",
+    "surveys": "Manage Surveys",
+    "categories": "Manage Categories",
+    "questions": "Manage Questions",
+    "answers": "Manage Answers",
+    "survey_assignment": "Survey Assignment",
+    "users": "Manage Users",
+    "roles": "Manage Roles",
+    "profile": "Profile",
+    "theme": "Theme",
+    "white": "White",
+    "dark": "Dark",
+    "language": "Language",
+    "logout": "Log Out",
+    "close": "Close"
 }
