@@ -1,7 +1,7 @@
 import { StrictMode, useMemo, useState } from 'react';
 import { createRoot } from 'react-dom/client';
 import { BrowserRouter } from 'react-router-dom';
-import { CssBaseline, ThemeProvider, Box, Toolbar, useMediaQuery } from '@mui/material';
+import { Container, CssBaseline, ThemeProvider, Box, Toolbar, useMediaQuery } from '@mui/material';
 
 import App from './App.jsx';
 import PageAppBar from './components/PageAppBar.jsx';
@@ -47,7 +47,9 @@ const Root = () => {
             }),
           }}
         >
-          <App />
+          <Container>
+            <App />
+          </Container>
         </Box>
       </BrowserRouter>
     </ThemeProvider>
