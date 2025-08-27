@@ -11,7 +11,7 @@ import {
 
 import { Add } from '@mui/icons-material';
 
-import ActionButtons from '../../components/ActionButtons';
+import PageActionButtons from '../../components/PageActionButtons';
 import PageTable from '../../components/PageTable';
 
 const ListUsers = () => {
@@ -87,7 +87,7 @@ const ListUsers = () => {
                             headCells={userHeaders}
                             rows={userList}
                             actions={
-                                <ActionButtons
+                                <PageActionButtons
                                     showView
                                     showEdit
                                     showDelete

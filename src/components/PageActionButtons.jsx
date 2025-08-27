@@ -12,7 +12,7 @@ import {
 
 import { useTranslation } from 'react-i18next';
 
-const ActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showDelete }) => {
+const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showDelete }) => {
     const { t } = useTranslation();
 
     return (
@@ -67,4 +67,4 @@ const ActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showDelet
     );
 }
 
-export default ActionButtons;
+export default PageActionButtons;
