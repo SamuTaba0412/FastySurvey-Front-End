@@ -30,7 +30,7 @@ const ListUsers = () => {
     const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
     const [openInfoUserModal, setOpenInfoUserModal] = useState(false);
 
-    const [idUsuario, setIdUsuario] = useState(0);
+    const [idUser, setIdUser] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
 
     const [userList, setUserList] = useState([
@@ -131,7 +131,7 @@ const ListUsers = () => {
                                 variant="contained"
                                 startIcon={<Add />}
                                 onClick={() => {
-                                    setIdUsuario(0);
+                                    setIdUser(0);
                                     setOpenUserModal(true);
                                 }}
                                 sx={{ ml: 'auto' }}
@@ -149,15 +149,15 @@ const ListUsers = () => {
                                     showEdit
                                     showDelete
                                     onView={(id = 1) => {
-                                        setIdUsuario(id);
+                                        setIdUser(id);
                                         setOpenInfoUserModal(true);
                                     }}
                                     onEdit={(id = 1) => {
-                                        setIdUsuario(id);
+                                        setIdUser(id);
                                         setOpenUserModal(true);
                                     }}
                                     onDelete={(id = 1) => {
-                                        setIdUsuario(id);
+                                        setIdUser(id);
                                         setOpenDeleteUserModal(true);
                                     }}
                                 />
@@ -170,19 +170,19 @@ const ListUsers = () => {
             <InfoUsers
                 open={openInfoUserModal}
                 onClose={() => setOpenInfoUserModal(false)}
-                idUsuario={idUsuario}
+                idUser={idUser}
             />
 
             <ModalUsers
                 open={openUserModal}
                 onClose={() => setOpenUserModal(false)}
-                idUsuario={idUsuario}
+                idUser={idUser}
             />
 
             <DeleteUsers
                 open={openDeleteUserModal}
                 onClose={() => setOpenDeleteUserModal(false)}
-                idUsuario={idUsuario}
+                idUser={idUser}
             />
         </>
     );

@@ -5,7 +5,7 @@ import { Typography } from '@mui/material';
 
 import PageModal from '../../components/PageModal';
 
-const DeleteUsers = ({ idUsuario = 0, open, onClose }) => {
+const DeleteUsers = ({ idUser = 0, open, onClose }) => {
     const { t } = useTranslation();
 
     const deleteUser = async () => {

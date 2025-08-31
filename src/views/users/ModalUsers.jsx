@@ -15,7 +15,7 @@ import {
 import PageModal from '../../components/PageModal';
 import createUserSchema from '../../js/validations/userSchema';
 
-const ModalUsers = ({ idUsuario = 0, open, onClose }) => {
+const ModalUsers = ({ idUser = 0, open, onClose }) => {
     const { t } = useTranslation();
     const userSchema = createUserSchema(t);
 
@@ -82,7 +82,7 @@ const ModalUsers = ({ idUsuario = 0, open, onClose }) => {
     useEffect(() => {
         if (!open) return;
 
-        if (idUsuario == 0) {
+        if (idUser == 0) {
             setInfoUser(initialUserState);
             setErrors({});
         } else {
@@ -96,15 +96,15 @@ const ModalUsers = ({ idUsuario = 0, open, onClose }) => {
             });
             setErrors({});
         }
-    }, [open, idUsuario]);
+    }, [open, idUser]);
 
     return (
         <PageModal
             maxWidth="md"
             open={open}
             onClose={onClose}
-            title={idUsuario != 0 ? t('user.editUser') : t('user.addUser')}
-            onConfirm={idUsuario != 0 ? editUser : addUser}
+            title={idUser != 0 ? t('user.editUser') : t('user.addUser')}
+            onConfirm={idUser != 0 ? editUser : addUser}
             sx={{
                 "& .MuiDialog-container": {
                     display: "flex",

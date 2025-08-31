@@ -21,7 +21,7 @@ import {
 
 import PageModal from '../../components/PageModal';
 
-const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
+const InfoUsers = ({ idUser = 0, open, onClose }) => {
     const { t } = useTranslation();
 
     const [infoUser, setInfoUser] = useState({
