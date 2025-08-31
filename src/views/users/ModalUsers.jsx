@@ -118,31 +118,39 @@ const ModalUsers = ({ idUsuario = 0, open, onClose }) => {
         >
             <Grid container spacing={2} alignItems="center" columns={{ xs: 4, sm: 8, md: 12 }}>
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>
-                    <TextField
-                        id="names"
-                        name="names"
-                        label={t('user.names')}
-                        variant="outlined"
-                        value={infoUser.names}
-                        onChange={handleUserChange}
-                        error={Boolean(errors.names)}
-                        helperText={errors.names || " "}
-                        fullWidth
-                    />
+                    <FormControl fullWidth error={Boolean(errors.names)}>
+                        <TextField
+                            id="names"
+                            name="names"
+                            label={t('user.names')}
+                            variant="outlined"
+                            value={infoUser.names}
+                            onChange={handleUserChange}
+                            error={Boolean(errors.names)}
+                        />
+
+                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                            {errors.names || " "}
+                        </FormHelperText>
+                    </FormControl>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>
-                    <TextField
-                        id="lastNames"
-                        name="lastNames"
-                        label={t('user.lastNames')}
-                        variant="outlined"
-                        value={infoUser.lastNames}
-                        onChange={handleUserChange}
-                        error={Boolean(errors.lastNames)}
-                        helperText={errors.lastNames || " "}
-                        fullWidth
-                    />
+                    <FormControl fullWidth error={Boolean(errors.lastNames)}>
+                        <TextField
+                            id="lastNames"
+                            name="lastNames"
+                            label={t('user.lastNames')}
+                            variant="outlined"
+                            value={infoUser.lastNames}
+                            onChange={handleUserChange}
+                            error={Boolean(errors.lastNames)}
+                        />
+
+                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                            {errors.lastNames || " "}
+                        </FormHelperText>
+                    </FormControl>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>
@@ -165,32 +173,40 @@ const ModalUsers = ({ idUsuario = 0, open, onClose }) => {
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>
-                    <TextField
-                        id="identification"
-                        name="identification"
-                        label={t('user.identification')}
-                        variant="outlined"
-                        value={infoUser.identification}
-                        onChange={handleUserChange}
-                        error={Boolean(errors.identification)}
-                        helperText={errors.identification || " "}
-                        fullWidth
-                    />
+                    <FormControl fullWidth error={Boolean(errors.identification)}>
+                        <TextField
+                            id="identification"
+                            name="identification"
+                            label={t('user.identification')}
+                            variant="outlined"
+                            value={infoUser.identification}
+                            onChange={handleUserChange}
+                            error={Boolean(errors.identification)}
+                        />
+
+                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                            {errors.identification || " "}
+                        </FormHelperText>
+                    </FormControl>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>
-                    <TextField
-                        id="email"
-                        name="email"
-                        label={t('user.email')}
-                        variant="outlined"
-                        type="email"
-                        value={infoUser.email}
-                        onChange={handleUserChange}
-                        error={Boolean(errors.email)}
-                        helperText={errors.email || " "}
-                        fullWidth
-                    />
+                    <FormControl fullWidth error={Boolean(errors.email)}>
+                        <TextField
+                            id="email"
+                            name="email"
+                            label={t('user.email')}
+                            variant="outlined"
+                            type="email"
+                            value={infoUser.email}
+                            onChange={handleUserChange}
+                            error={Boolean(errors.email)}
+                        />
+
+                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                            {errors.email || " "}
+                        </FormHelperText>
+                    </FormControl>
                 </Grid>
 
                 <Grid size={{ xs: 6, sm: 12, md: 6 }}>

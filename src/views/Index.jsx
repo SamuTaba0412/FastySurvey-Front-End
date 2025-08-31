@@ -76,7 +76,7 @@ const Index = () => {
                 gap={1}
             >
                 <Button variant="contained" startIcon={<AssignmentLate />}>
-                    {t('actions.info')} {/* ahora apunta a la sección actions */}
+                    {t('actions.fillOut')}
                 </Button>
             </Box>
         );

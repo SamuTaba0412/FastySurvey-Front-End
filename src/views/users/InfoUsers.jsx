@@ -60,15 +60,11 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
             showActions
         >
             <List
-                sx={(theme) => ({
+                sx={{
                     width: "100%",
                     height: "100%",
-                    bgcolor:
-                        theme.palette.mode === "light"
-                            ? theme.palette.grey[200]
-                            : theme.palette.background.paper,
                     borderRadius: 2,
-                })}
+                }}
             >
                 <ListItem>
                     <ListItemAvatar>
@@ -76,9 +72,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <Person />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.fullName') + ":"} 
-                        secondary={`${infoUser.names} ${infoUser.lastNames}`} 
+                    <ListItemText
+                        primary={t('user.fullName') + ":"}
+                        secondary={`${infoUser.names} ${infoUser.lastNames}`}
                     />
                 </ListItem>
 
@@ -88,9 +84,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <RecentActors />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.identification') + ":"} 
-                        secondary={`${infoUser.identificationType.identificationName}: ${infoUser.identification}`} 
+                    <ListItemText
+                        primary={t('user.identification') + ":"}
+                        secondary={`${infoUser.identificationType.identificationName}: ${infoUser.identification}`}
                     />
                 </ListItem>
 
@@ -100,9 +96,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <Email />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.email') + ":"} 
-                        secondary={infoUser.email} 
+                    <ListItemText
+                        primary={t('user.email') + ":"}
+                        secondary={infoUser.email}
                     />
                 </ListItem>
 
@@ -112,9 +108,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <Security />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.role') + ":"} 
-                        secondary={infoUser.role.roleName} 
+                    <ListItemText
+                        primary={t('user.role') + ":"}
+                        secondary={infoUser.role.roleName}
                     />
                 </ListItem>
 
@@ -124,9 +120,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <Add />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.createdBy') + ":"} 
-                        secondary={infoUser.createdBy} 
+                    <ListItemText
+                        primary={t('user.createdBy') + ":"}
+                        secondary={infoUser.createdBy}
                     />
                 </ListItem>
 
@@ -136,9 +132,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <CalendarMonth />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.creationDate') + ":"} 
-                        secondary={infoUser.creationDate.toDateString()} 
+                    <ListItemText
+                        primary={t('user.creationDate') + ":"}
+                        secondary={infoUser.creationDate.toDateString()}
                     />
                 </ListItem>
 
@@ -148,9 +144,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <Edit />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.updatedBy') + ":"} 
-                        secondary={infoUser.updatedBy} 
+                    <ListItemText
+                        primary={t('user.updatedBy') + ":"}
+                        secondary={infoUser.updatedBy}
                     />
                 </ListItem>
 
@@ -160,9 +156,9 @@ const InfoUsers = ({ idUsuario = 0, open, onClose }) => {
                             <CalendarMonth />
                         </Avatar>
                     </ListItemAvatar>
-                    <ListItemText 
-                        primary={t('user.updateDate') + ":"} 
-                        secondary={infoUser.updatedDate.toDateString()} 
+                    <ListItemText
+                        primary={t('user.updateDate') + ":"}
+                        secondary={infoUser.updatedDate.toDateString()}
                     />
                 </ListItem>
             </List>

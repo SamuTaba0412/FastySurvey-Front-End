@@ -61,10 +61,6 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
         { name: t('navigation.surveys'), path: '/surveys', icon: <Assignment /> },
         { name: t('navigation.surveyAssignment'), path: '/users/assignment', icon: <AssignmentAdd /> },
         { name: 'divider' },
-        { name: t('navigation.categories'), path: '/categories', icon: <Category /> },
-        { name: t('navigation.questions'), path: '/questions', icon: <QuestionMark /> },
-        { name: t('navigation.answers'), path: '/answers', icon: <QuestionAnswer /> },
-        { name: 'divider' },
         { name: t('navigation.users'), path: '/users', icon: <Person /> },
         { name: t('navigation.roles'), path: '/roles', icon: <Security /> },
     ];

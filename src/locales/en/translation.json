@@ -14,6 +14,7 @@
     "dark": "Dark",
     "language": "Language",
     "logout": "Log Out",
+    "search": "Search",
     "close": "Close"
   },
 
@@ -60,7 +61,8 @@
     "confirm": "Confirm",
     "cancel": "Cancel",
     "info": "View more",
-    "infoShow": "Additional Information"
+    "infoShow": "Additional Information",
+    "fillOut": "Fill Out"
   },
 
   "pagination": {

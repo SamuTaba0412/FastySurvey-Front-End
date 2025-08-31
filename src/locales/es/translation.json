@@ -14,6 +14,7 @@
     "dark": "Oscuro",
     "language": "Lenguaje",
     "logout": "Cerrar Sesión",
+    "search": "Buscar",
     "close": "Cerrar"
   },
 
@@ -60,7 +61,8 @@
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "info": "Ver más",
-    "infoShow": "Información Adicional"
+    "infoShow": "Información Adicional",
+    "fillOut": "Diligenciar"
   },
 
   "pagination": {

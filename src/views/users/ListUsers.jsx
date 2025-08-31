@@ -6,10 +6,15 @@ import {
     Button,
     Card,
     CardContent,
+    InputAdornment,
+    TextField,
     Typography,
 } from '@mui/material';
 
-import { Add } from '@mui/icons-material';
+import {
+    Add,
+    Search,
+} from '@mui/icons-material';
 
 import PageActionButtons from '../../components/PageActionButtons';
 import PageTable from '../../components/PageTable';
@@ -26,6 +31,7 @@ const ListUsers = () => {
     const [openInfoUserModal, setOpenInfoUserModal] = useState(false);
 
     const [idUsuario, setIdUsuario] = useState(0);
+    const [searchTerm, setSearchTerm] = useState("");
 
     const [userList, setUserList] = useState([
         {
@@ -75,6 +81,16 @@ const ListUsers = () => {
         }
     ], [t]);
 
+    const filteredUsers = useMemo(() => {
+        const keyword = searchTerm.toLowerCase();
+
+        return userList.filter(user =>
+            Object.values(user).some(value =>
+                value.toLowerCase().includes(keyword)
+            )
+        );
+    }, [searchTerm, userList]);
+
     return (
         <>
             <Card variant="elevation">
@@ -83,7 +99,33 @@ const ListUsers = () => {
                         {t('navigation.users')}
                     </Typography>
                     <Box sx={{ mt: 2 }}>
-                        <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
+                        <Box
+                            sx={{
+                                mb: 2,
+                                display: 'flex',
+                                alignItems: 'center',
+                            }}
+                        >
+                            <TextField
+                                size="small"
+                                variant="outlined"
+                                placeholder={t('navigation.search')}
+                                value={searchTerm}
+                                onChange={(e) => setSearchTerm(e.target.value)}
+                                slotProps={{
+                                    input: {
+                                        startAdornment: (
+                                            <InputAdornment position="start">
+                                                <Search />
+                                            </InputAdornment>
+                                        ),
+                                    },
+                                }}
+                                sx={{
+                                    width: { xs: '60%', sm: '250px' },
+                                }}
+                            />
+
                             <Button
                                 color="success"
                                 variant="contained"
@@ -92,6 +134,7 @@ const ListUsers = () => {
                                     setIdUsuario(0);
                                     setOpenUserModal(true);
                                 }}
+                                sx={{ ml: 'auto' }}
                             >
                                 {t('user.add')}
                             </Button>
@@ -99,7 +142,7 @@ const ListUsers = () => {
 
                         <PageTable
                             headCells={userHeaders}
-                            rows={userList}
+                            rows={filteredUsers}   // 👈 aquí
                             actions={
                                 <PageActionButtons
                                     showView

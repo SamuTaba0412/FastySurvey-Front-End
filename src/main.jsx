@@ -49,7 +49,7 @@ const Root = () => {
             }),
           }}
         >
-          <Container >
+          <Container>
             <App />
           </Container>
         </Box>
