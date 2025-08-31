@@ -56,6 +56,11 @@
     "userDeleted": "Usuario eliminado con éxito!"
   },
 
+  "tables": {
+    "permissions": "Permisos",
+    "state": "Estado"
+  },
+
   "actions": {
     "save": "Guardar",
     "confirm": "Confirmar",

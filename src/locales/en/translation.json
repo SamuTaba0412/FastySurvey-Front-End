@@ -56,6 +56,11 @@
     "userDeleted": "User deleted succesfully!"
   },
 
+  "tables": {
+    "permissions": "Permissions",
+    "state": "Estado"
+  },
+
   "actions": {
     "save": "Save",
     "confirm": "Confirm",
