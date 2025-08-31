@@ -19,6 +19,8 @@ import {
 import PageActionButtons from '../../components/PageActionButtons';
 import PageTable from '../../components/PageTable';
 
+import ModalRoles from './ModalRoles';
+
 const ListRoles = () => {
     const { t } = useTranslation();
 
@@ -166,6 +168,12 @@ const ListRoles = () => {
                     </Box>
                 </CardContent>
             </Card>
+
+            <ModalRoles
+                open={openRoleModal}
+                onClose={() => setOpenRoleModal(false)}
+                idRole={idRole}
+            />
         </>
     );
 }

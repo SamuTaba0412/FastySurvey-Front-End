@@ -56,9 +56,18 @@
     "userDeleted": "User deleted succesfully!"
   },
 
+  "role": {
+    "selectMultiplePermissions": "Select multiple permissions",
+    "addRole": "Add Role",
+    "editRole": "Edit Role",
+    "roleCreated": "Role created succesfully!",
+    "roleEdited": "Role edited succesfully!",
+    "roleDeleted": "Role deleted succesfully!"
+  },
+
   "tables": {
     "permissions": "Permissions",
-    "state": "Estado"
+    "state": "State"
   },
 
   "actions": {

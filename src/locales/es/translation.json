@@ -56,6 +56,15 @@
     "userDeleted": "Usuario eliminado con éxito!"
   },
 
+  "role": {
+    "selectMultiplePermissions": "Seleccione varios permisos",
+    "addRole": "Agregar Rol",
+    "editRole": "Editar Rol",
+    "roleCreated": "Rol creado con éxito!",
+    "roleEdited": "Rol editado con éxito!",
+    "roleDeleted": "Rol eliminado con éxito!"
+  },
+
   "tables": {
     "permissions": "Permisos",
     "state": "Estado"
