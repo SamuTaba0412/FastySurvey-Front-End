@@ -42,35 +42,35 @@ const ListUsers = () => {
             id: "fullName",
             numeric: false,
             disablePadding: false,
-            label: t('fullName'),
+            label: t('user.fullName'),
             disableSorting: false
         },
         {
             id: "identificationType",
             numeric: false,
             disablePadding: false,
-            label: t('identificationType'),
+            label: t('user.identificationType'),
             disableSorting: false
         },
         {
             id: "identification",
             numeric: false,
             disablePadding: false,
-            label: t('identification'),
+            label: t('user.identification'),
             disableSorting: false
         },
         {
             id: "email",
             numeric: false,
             disablePadding: false,
-            label: t('email'),
+            label: t('user.email'),
             disableSorting: false
         },
         {
             id: "role",
             numeric: false,
             disablePadding: false,
-            label: t('role'),
+            label: t('user.role'),
             disableSorting: false
         }
     ], [t]);
@@ -80,7 +80,7 @@ const ListUsers = () => {
             <Card variant="elevation">
                 <CardContent>
                     <Typography variant="h4" gutterBottom>
-                        {t('users')}
+                        {t('navigation.users')}
                     </Typography>
                     <Box sx={{ mt: 2 }}>
                         <Box sx={{ mb: 2, display: 'flex', justifyContent: 'flex-end' }}>
@@ -93,7 +93,7 @@ const ListUsers = () => {
                                     setOpenUserModal(true);
                                 }}
                             >
-                                {t('add')}
+                                {t('user.add')}
                             </Button>
                         </Box>
 

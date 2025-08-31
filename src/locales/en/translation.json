@@ -1,4 +1,5 @@
 {
+  "navigation": {
     "index": "Main Page",
     "surveys": "Manage Surveys",
     "categories": "Manage Categories",
@@ -13,13 +14,23 @@
     "dark": "Dark",
     "language": "Language",
     "logout": "Log Out",
-    "close": "Close",
+    "close": "Close"
+  },
+
+  "welcome": {
     "welcome": "Welcome to Fasty-Survey!",
-    "welcomeFastySurvey": "Fasty-Survey is a technological solution focused on comprehensive survey management, developed with the main goal of optimizing data collection and analysis processes. This tool allows administrators to create customizable surveys, define dynamic question structures, and configure different types of responses based on the needs of the study.\nIt also facilitates the assignment of surveys to specific users, ensuring efficient and controlled distribution. Users can complete the surveys through an intuitive and responsive interface, significantly enhancing the user experience.\nOnce the data is collected, Fasty-Survey provides a results visualization system that enables users to clearly and attractively interpret the information through interactive charts and reports. This makes data analysis more accessible and valuable for strategic decision-making.",
+    "welcomeFastySurvey": "Fasty-Survey is a technological solution focused on comprehensive survey management, developed with the main goal of optimizing data collection and analysis processes. This tool allows administrators to create customizable surveys, define dynamic question structures, and configure different types of responses based on the needs of the study.\nIt also facilitates the assignment of surveys to specific users, ensuring efficient and controlled distribution. Users can complete the surveys through an intuitive and responsive interface, significantly enhancing the user experience.\nOnce the data is collected, Fasty-Survey provides a results visualization system that enables users to clearly and attractively interpret the information through interactive charts and reports. This makes data analysis more accessible and valuable for strategic decision-making."
+  },
+
+  "survey": {
     "surveyResolve": "Surveys to Resolve:",
     "selectOption": "Select an Option",
     "selectGroup": "Select Group",
     "helperSelectGroup": "Select a group to filter",
+    "deathline": "Deathline"
+  },
+
+  "user": {
     "name": "Name",
     "names": "Names",
     "lastNames": "Last Names",
@@ -41,14 +52,26 @@
     "deleteRegister": "Are you sure to delete this register?",
     "userCreated": "User created succesfully!",
     "userEdited": "User edited succesfully!",
-    "userDeleted": "User deleted succesfully!",
+    "userDeleted": "User deleted succesfully!"
+  },
+
+  "actions": {
     "save": "Save",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "info": "View more",
-    "infoShow": "Additional Information",
-    "deathline": "Deathline",
+    "infoShow": "Additional Information"
+  },
+
+  "pagination": {
     "rowsPerPage": "Rows per change:",
     "paginationRange": "{{from}}–{{to}} of {{count}}",
     "noRecordsFound": "No records were founded."
+  },
+
+  "validations": {
+    "requiredField": "This field is required",
+    "notValidDocument": "Invalid document",
+    "notValidEmail": "Invalid email"
+  }
 }

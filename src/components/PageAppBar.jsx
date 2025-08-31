@@ -20,8 +20,7 @@ import {
     IconButton,
     ListItemIcon,
     Tooltip
-}
-    from '@mui/material';
+} from '@mui/material';
 
 import MenuIcon from '@mui/icons-material/Menu';
 import {
@@ -38,8 +37,7 @@ import {
     Security,
     QuestionMark,
     QuestionAnswer,
-}
-    from '@mui/icons-material';
+} from '@mui/icons-material';
 
 const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
     const theme = useTheme();
@@ -59,16 +57,16 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
     const currentLanguage = languages.find(lang => lang.identifier === i18n.language)?.name || i18n.language;
 
     const pages = [
-        { name: t('index'), path: '/', icon: <Domain /> },
-        { name: t('surveys'), path: '/surveys', icon: <Assignment /> },
-        { name: t('surveyAssignment'), path: '/users/assignment', icon: <AssignmentAdd /> },
+        { name: t('navigation.index'), path: '/', icon: <Domain /> },
+        { name: t('navigation.surveys'), path: '/surveys', icon: <Assignment /> },
+        { name: t('navigation.surveyAssignment'), path: '/users/assignment', icon: <AssignmentAdd /> },
         { name: 'divider' },
-        { name: t('categories'), path: '/categories', icon: <Category /> },
-        { name: t('questions'), path: '/questions', icon: <QuestionMark /> },
-        { name: t('answers'), path: '/answers', icon: <QuestionAnswer /> },
+        { name: t('navigation.categories'), path: '/categories', icon: <Category /> },
+        { name: t('navigation.questions'), path: '/questions', icon: <QuestionMark /> },
+        { name: t('navigation.answers'), path: '/answers', icon: <QuestionAnswer /> },
         { name: 'divider' },
-        { name: t('users'), path: '/users', icon: <Person /> },
-        { name: t('roles'), path: '/roles', icon: <Security /> },
+        { name: t('navigation.users'), path: '/users', icon: <Person /> },
+        { name: t('navigation.roles'), path: '/roles', icon: <Security /> },
     ];
 
     const [anchorElUser, setAnchorElUser] = useState(null);
@@ -112,7 +110,7 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
                         FASTY SURVEY
                     </Typography>
                     <Box sx={{ flexGrow: 0 }}>
-                        <Tooltip title="Open settings">
+                        <Tooltip title={t('navigation.profile')}>
                             <IconButton onClick={handleOpenUserMenu} sx={{ p: 0 }}>
                                 <Avatar alt="Remy Sharp" />
                             </IconButton>
@@ -162,33 +160,33 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
                             }}
                         >
                             <MenuItem>
-                                <Avatar sx={{ mr: 1 }} /> {t('profile')}
+                                <Avatar sx={{ mr: 1 }} /> {t('navigation.profile')}
                             </MenuItem>
                             <Divider />
                             <MenuItem onClick={toggleColorMode}>
                                 <ListItemIcon>
                                     {colorMode === 'dark' ? <Brightness3 size="small" /> : <Brightness7 size="small" />}
                                 </ListItemIcon>
-                                {t('theme')}: {colorMode === 'dark' ? t('dark') : t('white')}
+                                {t('navigation.theme')}: {colorMode === 'dark' ? t('navigation.dark') : t('navigation.white')}
                             </MenuItem>
                             <MenuItem onClick={handleOpenLanguageMenu}>
                                 <ListItemIcon>
                                     <Language size="small" />
                                 </ListItemIcon>
-                                {t('language')}: {currentLanguage}
+                                {t('navigation.language')}: {currentLanguage}
                             </MenuItem>
                             <Divider />
                             <MenuItem color="danger">
                                 <ListItemIcon>
                                     <Logout color="error" size="small" />
                                 </ListItemIcon>
-                                <Typography color="error">{t('logout')}</Typography>
+                                <Typography color="error">{t('navigation.logout')}</Typography>
                             </MenuItem>
                             <MenuItem onClick={handleCloseUserMenu}>
                                 <ListItemIcon>
                                     <Close size="small" />
                                 </ListItemIcon>
-                                {t('close')}
+                                {t('navigation.close')}
                             </MenuItem>
                         </Menu>
                     </Box>

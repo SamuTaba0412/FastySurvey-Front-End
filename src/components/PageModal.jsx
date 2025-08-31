@@ -1,4 +1,5 @@
 import { forwardRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
     Dialog,
@@ -32,12 +33,13 @@ const PageModal = ({
             justifyContent: "flex-center",
         },
     },
-    confirmText = "Aceptar",
-    cancelText = "Cancelar",
+    confirmText,
+    cancelText,
     showActions = true
 }) => {
     const theme = useTheme();
     const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+    const { t } = useTranslation();
 
     return (
         <Dialog
@@ -47,7 +49,8 @@ const PageModal = ({
             slots={{ transition: fullScreen ? Transition : null }}
             sx={sx}
             fullScreen={fullScreen}
-            fullWidth>
+            fullWidth
+        >
             <DialogTitle sx={{ m: 0, p: 2 }}>
                 <Typography variant="h6" component="span">{title}</Typography>
                 <IconButton
@@ -70,11 +73,11 @@ const PageModal = ({
                 <DialogActions>
                     {onConfirm && (
                         <Button onClick={onConfirm} color="success" variant="contained">
-                            {confirmText}
+                            {confirmText || t('actions.confirm')}
                         </Button>
                     )}
                     <Button onClick={onClose} color="error" variant="contained">
-                        {cancelText}
+                        {cancelText || t('actions.cancel')}
                     </Button>
                 </DialogActions>
             )}

@@ -1,4 +1,5 @@
 {
+  "navigation": {
     "index": "Inicio",
     "surveys": "Administrar Encuestas",
     "categories": "Administrar Categorías",
@@ -13,13 +14,23 @@
     "dark": "Oscuro",
     "language": "Lenguaje",
     "logout": "Cerrar Sesión",
-    "close": "Cerrar",
+    "close": "Cerrar"
+  },
+
+  "welcome": {
     "welcome": "Bienvenido a Fasty-Survey!",
-    "welcomeFastySurvey": "Fasty-Survey es una solución tecnológica orientada a la gestión integral de encuestas, desarrollada con el objetivo de optimizar el proceso de recolección y análisis de datos. Esta herramienta permite a los administradores crear encuestas personalizadas, definir estructuras dinámicas de preguntas y configurar distintos tipos de respuestas según las necesidades del estudio.\nAdemás, facilita la asignación de encuestas a múltiples usuarios específicos, garantizando una distribución eficiente y controlada. Los usuarios pueden diligenciar las encuestas a través de una interfaz intuitiva y responsiva, lo que mejora significativamente la experiencia de uso.\nUna vez recopilados los datos, Fasty-Survey ofrece un sistema de visualización de resultados que permite interpretar la información de manera clara y atractiva, mediante gráficos y reportes interactivos. Esto hace que el análisis de la información sea más accesible y útil para la toma de decisiones estratégicas.",
+    "welcomeFastySurvey": "Fasty-Survey es una solución tecnológica orientada a la gestión integral de encuestas, desarrollada con el objetivo de optimizar el proceso de recolección y análisis de datos. Esta herramienta permite a los administradores crear encuestas personalizadas, definir estructuras dinámicas de preguntas y configurar distintos tipos de respuestas según las necesidades del estudio.\nAdemás, facilita la asignación de encuestas a múltiples usuarios específicos, garantizando una distribución eficiente y controlada. Los usuarios pueden diligenciar las encuestas a través de una interfaz intuitiva y responsiva, lo que mejora significativamente la experiencia de uso.\nUna vez recopilados los datos, Fasty-Survey ofrece un sistema de visualización de resultados que permite interpretar la información de manera clara y atractiva, mediante gráficos y reportes interactivos. Esto hace que el análisis de la información sea más accesible y útil para la toma de decisiones estratégicas."
+  },
+
+  "survey": {
     "surveyResolve": "Encuestas por Resolver:",
     "selectOption": "Seleccionar una Opción",
     "selectGroup": "Seleccionar Grupo",
     "helperSelectGroup": "Seleccione un grupo para filtrar",
+    "deathline": "Fecha Limite"
+  },
+
+  "user": {
     "name": "Nombre",
     "names": "Nombres",
     "lastNames": "Apellidos",
@@ -41,14 +52,26 @@
     "deleteRegister": "Está seguro de eliminar este registro?",
     "userCreated": "Usuario creado con éxito!",
     "userEdited": "Usuario editado con éxito!",
-    "userDeleted": "Usuario eliminado con éxito!",
+    "userDeleted": "Usuario eliminado con éxito!"
+  },
+
+  "actions": {
     "save": "Guardar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "info": "Ver más",
-    "infoShow": "Información Adicional",
-    "deathline": "Fecha Limite",
+    "infoShow": "Información Adicional"
+  },
+
+  "pagination": {
     "rowsPerPage": "Filas por página:",
     "paginationRange": "{{from}}–{{to}} de {{count}}",
     "noRecordsFound": "No se encontraron registros."
+  },
+
+  "validations": {
+    "requiredField": "Este campo es requerido",
+    "notValidDocument": "Documento no valido",
+    "notValidEmail": "Correo Electrónico no valido"
+  }
 }

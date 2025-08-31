@@ -148,11 +148,7 @@ const PageTable = ({ headCells, rows, actions }) => {
         <Box sx={{ width: '100%' }}>
             <Paper sx={{ width: '100%', mb: 2, p: 2 }} elevation={3}>
                 <TableContainer sx={{ maxHeight: 500, overflowX: 'auto' }}>
-                    <Table
-                        stickyHeader
-                        sx={{ minWidth: 750 }}
-                        size="medium"
-                    >
+                    <Table stickyHeader sx={{ minWidth: 750 }} size="medium">
                         <EnhancedTableHead
                             order={order}
                             orderBy={orderBy}
@@ -174,10 +170,7 @@ const PageTable = ({ headCells, rows, actions }) => {
                                                 {row[cell.id]}
                                             </TableCell>
                                         ))}
-                                        <TableCell
-                                            align="center"
-                                            sx={{ verticalAlign: 'middle' }}
-                                        >
+                                        <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
                                             {actions}
                                         </TableCell>
                                     </TableRow>
@@ -185,7 +178,7 @@ const PageTable = ({ headCells, rows, actions }) => {
                             ) : (
                                 <TableRow>
                                     <TableCell colSpan={headCells.length + 1} align="center">
-                                        {t('noRecordsFound')}
+                                        {t('pagination.noRecordsFound')}
                                     </TableCell>
                                 </TableRow>
                             )}
@@ -196,7 +189,6 @@ const PageTable = ({ headCells, rows, actions }) => {
                                 </TableRow>
                             )}
                         </TableBody>
-
                     </Table>
                 </TableContainer>
                 <TablePagination
@@ -207,9 +199,9 @@ const PageTable = ({ headCells, rows, actions }) => {
                     page={page}
                     onPageChange={handleChangePage}
                     onRowsPerPageChange={handleChangeRowsPerPage}
-                    labelRowsPerPage={t('rowsPerPage')}
+                    labelRowsPerPage={t('pagination.rowsPerPage')}
                     labelDisplayedRows={({ from, to, count }) =>
-                        t('paginationRange', { from, to, count })
+                        t('pagination.paginationRange', { from, to, count })
                     }
                 />
             </Paper>

@@ -23,7 +23,7 @@ const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showD
             gap={1}
         >
             {showView && (
-                <Tooltip title={t('info')}>
+                <Tooltip title={t('actions.info')}>
                     <Button
                         size="small"
                         variant="contained"
@@ -37,7 +37,7 @@ const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showD
             )}
 
             {showEdit && (
-                <Tooltip title={t('edit')}>
+                <Tooltip title={t('user.edit')}>
                     <Button
                         size="small"
                         variant="contained"
@@ -51,7 +51,7 @@ const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showD
             )}
 
             {showDelete && (
-                <Tooltip title={t('delete')}>
+                <Tooltip title={t('user.delete')}>
                     <Button
                         size="small"
                         variant="contained"

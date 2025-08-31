@@ -12,8 +12,7 @@ import {
     Typography,
 } from '@mui/material';
 
-import { AssignmentLate } from '@mui/icons-material'
-
+import { AssignmentLate } from '@mui/icons-material';
 import PageTable from '../components/PageTable';
 
 const Index = () => {
@@ -38,88 +37,95 @@ const Index = () => {
         { value: "3", label: "Grupo 3" }
     ]);
 
+    const [selectedGroup, setSelectedGroup] = useState("0");
+
     const surveyHeaders = useMemo(() => [
         {
             id: "name",
             numeric: false,
             disablePadding: false,
-            label: t('name'),
+            label: t('user.name'),
             disableSorting: false
         },
         {
             id: "language",
             numeric: false,
             disablePadding: false,
-            label: t('language'),
+            label: t('navigation.language'),
             disableSorting: false
         },
         {
             id: "deathline",
             numeric: false,
             disablePadding: false,
-            label: t('deathline'),
+            label: t('survey.deathline'),
             disableSorting: false
         }
     ], [t]);
 
+    const handleGroupChange = (event) => {
+        setSelectedGroup(event.target.value);
+    };
+
     function Actions() {
         return (
-            <>
-                <Box
-                    display="flex"
-                    justifyContent="center"
-                    alignItems="center"
-                    gap={1}
-                >
-                    <Button variant="contained" startIcon={<AssignmentLate />}>
-                        Diligenciar
-                    </Button>
-                </Box>
-            </>
+            <Box
+                display="flex"
+                justifyContent="center"
+                alignItems="center"
+                gap={1}
+            >
+                <Button variant="contained" startIcon={<AssignmentLate />}>
+                    {t('actions.info')} {/* ahora apunta a la sección actions */}
+                </Button>
+            </Box>
         );
     }
 
     return (
-        <>
-            <Card variant="elevation">
-                <CardContent>
-                    <Typography variant="h4" gutterBottom>
-                        {t('welcome')}
-                    </Typography>
-                    <Typography variant="body1" component="p">
-                        {t('welcomeFastySurvey').split('\n').map((line, index) => (
-                            <span key={index}>
-                                {line}
-                                <br />
-                                <br />
-                            </span>
+        <Card variant="elevation">
+            <CardContent>
+                <Typography variant="h4" gutterBottom>
+                    {t('welcome.welcome')}
+                </Typography>
+                <Typography variant="body1" component="p">
+                    {t('welcome.welcomeFastySurvey').split('\n').map((line, index) => (
+                        <span key={index}>
+                            {line}
+                            <br />
+                            <br />
+                        </span>
+                    ))}
+                </Typography>
+
+                <Divider sx={{ my: 2 }} />
+
+                <Typography variant="h4" gutterBottom>
+                    {t('survey.surveyResolve')}
+                </Typography>
+
+                <Box display="flex" justifyContent="flex-end" mb={2}>
+                    <TextField
+                        select
+                        label={t('survey.selectGroup')}
+                        value={selectedGroup}
+                        onChange={handleGroupChange}
+                        helperText={t('survey.helperSelectGroup')}
+                        size="small"
+                    >
+                        <MenuItem value="0">{t('survey.selectOption')}</MenuItem>
+                        {groupSelect.map((option) => (
+                            <MenuItem key={option.value} value={option.value}>
+                                {option.label}
+                            </MenuItem>
                         ))}
-                    </Typography>
-                    <Divider />
-                    <Typography variant="h4" mt={2} gutterBottom>
-                        {t('surveyResolve')}
-                    </Typography>
-                    <Box display="flex" justifyContent="flex-end">
-                        <TextField
-                            id="outlined-select-currency-native"
-                            select
-                            label={t('selectGroup')}
-                            defaultValue="0"
-                            helperText={t('helperSelectGroup')}
-                        >
-                            <MenuItem key="0" value="0">{t('selectOption')}</MenuItem>
-                            {groupSelect.map((option) => (
-                                <MenuItem key={option.value} value={option.value}>{option.label}</MenuItem>
-                            ))}
-                        </TextField>
-                    </Box>
-                    <Box sx={{ mt: 2 }}>
-                        <PageTable headCells={surveyHeaders} rows={surveyList} actions={<Actions />} />
-                    </Box>
-                </CardContent>
-            </Card>
-        </>
+                    </TextField>
+                </Box>
+
+                <PageTable headCells={surveyHeaders} rows={surveyList} actions={<Actions />} />
+            </CardContent>
+        </Card>
     );
-}
+};
 
 export default Index;
