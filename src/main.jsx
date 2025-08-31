@@ -9,6 +9,7 @@ import PageAppBar from './components/PageAppBar.jsx';
 import { getTheme } from './js/theme.js';
 import './js/i18next.js';
 import './css/index.css';
+import { ToastContainer } from 'react-toastify';
 
 const Root = () => {
   const storedMode = localStorage.getItem('colorMode') || 'light';
@@ -28,6 +29,7 @@ const Root = () => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
+      <ToastContainer theme={storedMode == 'light' ? 'colored' : 'dark'} />
       <BrowserRouter>
         <PageAppBar
           toggleColorMode={toggleColorMode}

@@ -14,8 +14,18 @@ import { Add } from '@mui/icons-material';
 import PageActionButtons from '../../components/PageActionButtons';
 import PageTable from '../../components/PageTable';
 
+import ModalUsers from './ModalUsers';
+import DeleteUsers from './DeleteUsers';
+import InfoUsers from './InfoUsers';
+
 const ListUsers = () => {
     const { t } = useTranslation();
+
+    const [openUserModal, setOpenUserModal] = useState(false);
+    const [openDeleteUserModal, setOpenDeleteUserModal] = useState(false);
+    const [openInfoUserModal, setOpenInfoUserModal] = useState(false);
+
+    const [idUsuario, setIdUsuario] = useState(0);
 
     const [userList, setUserList] = useState([
         {
@@ -78,6 +88,10 @@ const ListUsers = () => {
                                 color="success"
                                 variant="contained"
                                 startIcon={<Add />}
+                                onClick={() => {
+                                    setIdUsuario(0);
+                                    setOpenUserModal(true);
+                                }}
                             >
                                 {t('add')}
                             </Button>
@@ -91,12 +105,42 @@ const ListUsers = () => {
                                     showView
                                     showEdit
                                     showDelete
+                                    onView={(id = 1) => {
+                                        setIdUsuario(id);
+                                        setOpenInfoUserModal(true);
+                                    }}
+                                    onEdit={(id = 1) => {
+                                        setIdUsuario(id);
+                                        setOpenUserModal(true);
+                                    }}
+                                    onDelete={(id = 1) => {
+                                        setIdUsuario(id);
+                                        setOpenDeleteUserModal(true);
+                                    }}
                                 />
                             }
                         />
                     </Box>
                 </CardContent>
             </Card>
+
+            <InfoUsers
+                open={openInfoUserModal}
+                onClose={() => setOpenInfoUserModal(false)}
+                idUsuario={idUsuario}
+            />
+
+            <ModalUsers
+                open={openUserModal}
+                onClose={() => setOpenUserModal(false)}
+                idUsuario={idUsuario}
+            />
+
+            <DeleteUsers
+                open={openDeleteUserModal}
+                onClose={() => setOpenDeleteUserModal(false)}
+                idUsuario={idUsuario}
+            />
         </>
     );
 }

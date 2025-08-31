@@ -1,4 +1,5 @@
-import PropTypes from "prop-types";
+import { forwardRef } from "react";
+
 import {
     Dialog,
     DialogTitle,
@@ -6,9 +7,17 @@ import {
     DialogActions,
     Button,
     IconButton,
-    Typography
+    Typography,
+    useMediaQuery,
+    useTheme,
+    Slide,
 } from "@mui/material";
-import CloseIcon from "@mui/icons-material/Close";
+
+import { Close } from "@mui/icons-material";
+
+const Transition = forwardRef(function Transition(props, ref) {
+    return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const PageModal = ({
     maxWidth,
@@ -27,15 +36,20 @@ const PageModal = ({
     cancelText = "Cancelar",
     showActions = true
 }) => {
+    const theme = useTheme();
+    const fullScreen = useMediaQuery(theme.breakpoints.down('sm'));
+
     return (
         <Dialog
             open={open}
             onClose={onClose}
             maxWidth={maxWidth}
+            slots={{ transition: fullScreen ? Transition : null }}
             sx={sx}
+            fullScreen={fullScreen}
             fullWidth>
             <DialogTitle sx={{ m: 0, p: 2 }}>
-                <Typography variant="h6">{title}</Typography>
+                <Typography variant="h6" component="span">{title}</Typography>
                 <IconButton
                     aria-label="close"
                     onClick={onClose}
@@ -46,7 +60,7 @@ const PageModal = ({
                         color: (theme) => theme.palette.grey[500],
                     }}
                 >
-                    <CloseIcon />
+                    <Close />
                 </IconButton>
             </DialogTitle>
 
