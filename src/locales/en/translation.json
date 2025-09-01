@@ -60,6 +60,7 @@
     "selectMultiplePermissions": "Select multiple permissions",
     "addRole": "Add Role",
     "editRole": "Edit Role",
+    "deleteRole": "Eliminar Rol?",
     "roleCreated": "Role created succesfully!",
     "roleEdited": "Role edited succesfully!",
     "roleDeleted": "Role deleted succesfully!"
