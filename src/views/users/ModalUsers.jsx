@@ -8,6 +8,7 @@ import {
     FormHelperText,
     InputLabel,
     MenuItem,
+    OutlinedInput,
     Select,
     TextField,
 } from '@mui/material';
@@ -161,6 +162,7 @@ const ModalUsers = ({ idUser = 0, open, onClose }) => {
                             id="identificationType"
                             name="identificationType"
                             value={infoUser.identificationType || ""}
+                            input={<OutlinedInput label={t('user.identificationType')} />}
                             onChange={handleUserChange}
                         >
                             <MenuItem value={"1"}>{t('C.C.')}</MenuItem>
@@ -217,6 +219,7 @@ const ModalUsers = ({ idUser = 0, open, onClose }) => {
                             id="role"
                             name="role"
                             value={infoUser.role || ""}
+                            input={<OutlinedInput label={t('user.role')} />}
                             onChange={handleUserChange}
                         >
                             <MenuItem value={"1"}>Administrador</MenuItem>
