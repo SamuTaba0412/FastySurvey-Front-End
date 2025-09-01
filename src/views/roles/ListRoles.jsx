@@ -21,6 +21,7 @@ import PageTable from '../../components/PageTable';
 
 import ModalRoles from './ModalRoles';
 import DeleteRoles from './DeleteRoles';
+import InfoRoles from './InfoRoles';
 
 const ListRoles = () => {
     const { t } = useTranslation();
@@ -179,6 +180,12 @@ const ListRoles = () => {
             <DeleteRoles
                 open={openDeleteRoleModal}
                 onClose={() => setOpenDeleteRoleModal(false)}
+                idRole={idRole}
+            />
+
+            <InfoRoles
+                open={openInfoRoleModal}
+                onClose={() => setOpenInfoRoleModal(false)}
                 idRole={idRole}
             />
         </>
