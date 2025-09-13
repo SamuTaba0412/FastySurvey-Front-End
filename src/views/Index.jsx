@@ -67,7 +67,7 @@ const Index = () => {
         setSelectedGroup(event.target.value);
     };
 
-    function Actions() {
+    const Actions = ({ row }) => {
         return (
             <Box
                 display="flex"
@@ -122,7 +122,12 @@ const Index = () => {
                     </TextField>
                 </Box>
 
-                <PageTable headCells={surveyHeaders} rows={surveyList} actions={<Actions />} />
+                <PageTable
+                    headCells={surveyHeaders}
+                    rows={surveyList}
+                    actions={(row) => <Actions row={row} />}
+                />
+
             </CardContent>
         </Card>
     );
