@@ -35,6 +35,7 @@ const ListUsers = () => {
 
     const [userList, setUserList] = useState([
         {
+            idUser: 1,
             fullName: "Samuel Tabares Patiño",
             identificationType: "C.C.",
             identification: "1017923676",
@@ -85,9 +86,11 @@ const ListUsers = () => {
         const keyword = searchTerm.toLowerCase();
 
         return userList.filter(user =>
-            Object.values(user).some(value =>
-                value.toLowerCase().includes(keyword)
-            )
+            user.fullName.toLowerCase().includes(keyword) ||
+            user.identificationType.toLowerCase().includes(keyword) ||
+            user.identification.toLowerCase().includes(keyword) ||
+            user.email.toLowerCase().includes(keyword) ||
+            user.role.toLowerCase().includes(keyword)
         );
     }, [searchTerm, userList]);
 
@@ -142,26 +145,26 @@ const ListUsers = () => {
 
                         <PageTable
                             headCells={userHeaders}
-                            rows={filteredUsers}   // 👈 aquí
-                            actions={
+                            rows={filteredUsers}
+                            actions={(row) => (
                                 <PageActionButtons
                                     showView
                                     showEdit
                                     showDelete
-                                    onView={(id = 1) => {
-                                        setIdUser(id);
+                                    onView={() => {
+                                        setIdUser(row.idUser);
                                         setOpenInfoUserModal(true);
                                     }}
-                                    onEdit={(id = 1) => {
-                                        setIdUser(id);
+                                    onEdit={() => {
+                                        setIdUser(row.idUser);
                                         setOpenUserModal(true);
                                     }}
-                                    onDelete={(id = 1) => {
-                                        setIdUser(id);
+                                    onDelete={() => {
+                                        setIdUser(row.idUser);
                                         setOpenDeleteUserModal(true);
                                     }}
                                 />
-                            }
+                            )}
                         />
                     </Box>
                 </CardContent>
