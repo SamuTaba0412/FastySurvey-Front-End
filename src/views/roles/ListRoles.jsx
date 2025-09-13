@@ -35,6 +35,7 @@ const ListRoles = () => {
 
     const [roleList, setRoleList] = useState([
         {
+            idRole: 1,
             name: "Administrator",
             permissions: [{
                 idPermission: 1,
@@ -90,9 +91,10 @@ const ListRoles = () => {
             )
             .map(role => ({
                 ...role,
-                permissions: role.permissions.map(p => p.namePermission).join(", ")
+                permissions: role.permissions.map(p => p.namePermission).join(', '),
             }));
     }, [searchTerm, roleList]);
+
 
 
     return (
@@ -147,25 +149,25 @@ const ListRoles = () => {
                         <PageTable
                             headCells={roleHeaders}
                             rows={filteredRoles}
-                            actions={
+                            actions={(row) => (
                                 <PageActionButtons
                                     showView
                                     showEdit
                                     showDelete
-                                    onView={(id = 1) => {
-                                        setIdRole(id);
+                                    onView={() => {
+                                        setIdRole(row.idRole);
                                         setOpenInfoRoleModal(true);
                                     }}
-                                    onEdit={(id = 1) => {
-                                        setIdRole(id);
+                                    onEdit={() => {
+                                        setIdRole(row.idRole);
                                         setOpenRoleModal(true);
                                     }}
-                                    onDelete={(id = 1) => {
-                                        setIdRole(id);
+                                    onDelete={() => {
+                                        setIdRole(row.idRole);
                                         setOpenDeleteRoleModal(true);
                                     }}
                                 />
-                            }
+                            )}
                         />
                     </Box>
                 </CardContent>
