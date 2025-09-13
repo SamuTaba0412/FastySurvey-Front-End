@@ -171,7 +171,7 @@ const PageTable = ({ headCells, rows, actions }) => {
                                             </TableCell>
                                         ))}
                                         <TableCell align="center" sx={{ verticalAlign: 'middle' }}>
-                                            {actions}
+                                            {actions ? actions(row) : null}
                                         </TableCell>
                                     </TableRow>
                                 ))
