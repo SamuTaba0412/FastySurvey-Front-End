@@ -15,7 +15,8 @@
     "language": "Language",
     "logout": "Log Out",
     "search": "Search",
-    "close": "Close"
+    "close": "Close",
+    "yes": "Yes"
   },
 
   "welcome": {
@@ -24,10 +25,19 @@
   },
 
   "survey": {
+    "addSurvey": "Add Survey",
+    "editSurvey": "Edit Survey",
+    "addTerms": "Add terms and conditions?",
+    "introductionText": "Introductory Text",
     "surveyResolve": "Surveys to Resolve:",
     "selectOption": "Select an Option",
     "selectGroup": "Select Group",
     "helperSelectGroup": "Select a group to filter",
+    "surveyType": "Survey Type",
+    "surveyCreated": "Survey created succesfully!",
+    "surveyEdited": "Survey edited succesfully!",
+    "surveyDeleted": "Survey deleted succesfully!",
+    "termsConditions": "Terms and Conditions",
     "deathline": "Deathline"
   },
 
@@ -44,6 +54,8 @@
     "creationDate": "Creation Date",
     "updatedBy": "Updated By",
     "updateDate": "Update Date",
+    "configuratedBy": "Configured By",
+    "configurationDate": "Configuration Date",
     "add": "Add",
     "addUser": "Add User",
     "edit": "Edit",
