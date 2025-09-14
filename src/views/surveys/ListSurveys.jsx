@@ -19,6 +19,7 @@ import {
 import PageActionButtons from '../../components/PageActionButtons';
 import PageTable from '../../components/PageTable';
 
+import InfoSurveys from './InfoSurveys';
 import ModalSurveys from './ModalSurveys';
 
 const ListSurveys = () => {
@@ -144,6 +145,12 @@ const ListSurveys = () => {
                     </Box>
                 </CardContent>
             </Card>
+
+            <InfoSurveys
+                open={openInfoSurveyModal}
+                onClose={() => setOpenInfoSurveyModal(false)}
+                idSurvey={idSurvey}
+            />
 
             <ModalSurveys
                 open={openSurveyModal}

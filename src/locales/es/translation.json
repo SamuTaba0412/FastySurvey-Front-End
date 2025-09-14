@@ -80,7 +80,9 @@
   "pagination": {
     "rowsPerPage": "Filas por página:",
     "paginationRange": "{{from}}–{{to}} de {{count}}",
-    "noRecordsFound": "No se encontraron registros."
+    "noRecordsFound": "No se encontraron registros.",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
   },
 
   "validations": {

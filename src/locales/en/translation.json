@@ -80,7 +80,9 @@
   "pagination": {
     "rowsPerPage": "Rows per change:",
     "paginationRange": "{{from}}–{{to}} of {{count}}",
-    "noRecordsFound": "No records were founded."
+    "noRecordsFound": "No records were founded.",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
 
   "validations": {
