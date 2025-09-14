@@ -12,7 +12,15 @@ import {
 
 import { useTranslation } from 'react-i18next';
 
-const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showDelete }) => {
+const PageActionButtons = ({
+    onView,
+    onEdit,
+    onDelete,
+    showView,
+    showEdit,
+    showDelete,
+    customButtons = []
+}) => {
     const { t } = useTranslation();
 
     return (
@@ -63,6 +71,20 @@ const PageActionButtons = ({ onView, onEdit, onDelete, showView, showEdit, showD
                     </Button>
                 </Tooltip>
             )}
+
+            {customButtons.map((btn, idx) => (
+                <Tooltip key={idx} title={btn.tooltip || ''}>
+                    <Button
+                        size="small"
+                        variant="contained"
+                        color={btn.color || 'primary'}
+                        sx={{ minWidth: 'auto', padding: '8px' }}
+                        onClick={btn.onClick}
+                    >
+                        {btn.icon}
+                    </Button>
+                </Tooltip>
+            ))}
         </Box>
     );
 }
