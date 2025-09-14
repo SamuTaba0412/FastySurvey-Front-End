@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 
 import {
@@ -14,6 +15,7 @@ import {
 import {
     Add,
     Search,
+    Settings
 } from '@mui/icons-material';
 
 import PageActionButtons from '../../components/PageActionButtons';
@@ -24,6 +26,7 @@ import ModalSurveys from './ModalSurveys';
 
 const ListSurveys = () => {
     const { t } = useTranslation();
+    const navigate = useNavigate();
 
     const [openSurveyModal, setOpenSurveyModal] = useState(false);
     const [openDeleteSurveyModal, setOpenDeleteSurveyModal] = useState(false);
@@ -139,6 +142,14 @@ const ListSurveys = () => {
                                         setIdSurvey(row.idSurvey);
                                         setOpenSurveyModal(true);
                                     }}
+                                    customButtons={[
+                                        {
+                                            tooltip: t('survey.structuration'),
+                                            color: "secondary",
+                                            onClick: () => navigate('/surveys/structuration'),
+                                            icon: <Settings />
+                                        }
+                                    ]}
                                 />
                             )}
                         />
