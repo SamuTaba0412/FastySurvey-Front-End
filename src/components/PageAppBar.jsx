@@ -58,8 +58,8 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
 
     const pages = [
         { name: t('navigation.index'), path: '/', icon: <Domain /> },
-        { name: t('navigation.surveys'), path: '/surveys', icon: <Assignment /> },
-        { name: t('navigation.surveyAssignment'), path: '/users/assignment', icon: <AssignmentAdd /> },
+        { name: t('navigation.surveys'), path: '/surveys', icon: <AssignmentAdd /> },
+        { name: t('navigation.surveyAssignment'), path: '/surveys/assignment', icon: <Assignment /> },
         { name: 'divider' },
         { name: t('navigation.users'), path: '/users', icon: <Person /> },
         { name: t('navigation.roles'), path: '/roles', icon: <Security /> },

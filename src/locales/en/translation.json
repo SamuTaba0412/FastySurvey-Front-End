@@ -1,14 +1,16 @@
 {
   "navigation": {
     "index": "Main Page",
-    "surveys": "Manage Surveys",
+    "surveys": "Survey Creation",
     "categories": "Manage Categories",
     "questions": "Manage Questions",
     "answers": "Manage Answers",
-    "surveyAssignment": "Survey Assignment",
+    "surveyAssignment": "Manage Surveys",
     "users": "Manage Users",
     "roles": "Manage Roles",
     "profile": "Profile",
+    "next": "Next",
+    "previous": "Previous",
     "theme": "Theme",
     "white": "White",
     "dark": "Dark",
@@ -25,6 +27,7 @@
   },
 
   "survey": {
+    "answersTip": "Write it and press ENTER to enter your answer",
     "addSurvey": "Add Survey",
     "editSurvey": "Edit Survey",
     "addTerms": "Add terms and conditions?",
@@ -33,6 +36,10 @@
     "selectOption": "Select an Option",
     "selectGroup": "Select Group",
     "helperSelectGroup": "Select a group to filter",
+    "questionType": "Question Type",
+    "questionDescription": "Question Description",
+    "saveChanges": "Save Changes",
+    "surveyAnswers": "Answers",
     "surveyType": "Survey Type",
     "surveyCreated": "Survey created succesfully!",
     "surveyEdited": "Survey edited succesfully!",

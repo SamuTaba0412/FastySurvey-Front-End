@@ -1,14 +1,16 @@
 {
   "navigation": {
     "index": "Inicio",
-    "surveys": "Administrar Encuestas",
+    "surveys": "Creación De Encuestas",
     "categories": "Administrar Categorías",
     "questions": "Administrar Preguntas",
     "answers": "Administrar Respuestas",
-    "surveyAssignment": "Asignación De Encuestas",
+    "surveyAssignment": "Administrar Encuestas",
     "users": "Administrar Usuarios",
     "roles": "Administrar Roles",
     "profile": "Perfil",
+    "next": "Siguiente",
+    "previous": "Atrás",
     "theme": "Tema",
     "white": "Claro",
     "dark": "Oscuro",
@@ -25,6 +27,7 @@
   },
 
   "survey": {
+    "answersTip": "Escriba y pulse ENTER para ingresar la respuesta",
     "addSurvey": "Agregar Encuesta",
     "editSurvey": "Editar Encuesta",
     "addTerms": "Agregar términos y condiciones?",
@@ -33,6 +36,10 @@
     "selectOption": "Seleccionar una Opción",
     "selectGroup": "Seleccionar Grupo",
     "helperSelectGroup": "Seleccione un grupo para filtrar",
+    "questionType": "Tipo de Pregunta",
+    "questionDescription": "Descripción de la Pregunta",
+    "saveChanges": "Guardar Cambios",
+    "surveyAnswers": "Respuestas",
     "surveyType": "Tipo De Encuesta",
     "surveyCreated": "Encuesta creada con éxito!",
     "surveyEdited": "Encuesta editada con éxito!",

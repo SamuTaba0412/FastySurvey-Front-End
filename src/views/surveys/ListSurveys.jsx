@@ -28,8 +28,7 @@ const ListSurveys = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [openSurveyModal, setOpenSurveyModal] = useState(false);
-    const [openDeleteSurveyModal, setOpenDeleteSurveyModal] = useState(false);
+    const [openSurveyModal, setOpenSurveyModal] = useState(false);SS
     const [openInfoSurveyModal, setOpenInfoSurveyModal] = useState(false);
 
     const [idSurvey, setIdSurvey] = useState(0);
@@ -146,7 +145,7 @@ const ListSurveys = () => {
                                         {
                                             tooltip: t('survey.structuration'),
                                             color: "secondary",
-                                            onClick: () => navigate('/surveys/structuration'),
+                                            onClick: () => navigate(`/surveys/structuration/${row.idSurvey}`),
                                             icon: <Settings />
                                         }
                                     ]}

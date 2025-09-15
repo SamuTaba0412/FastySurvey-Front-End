@@ -8,12 +8,8 @@ import {
     FormControl,
     FormControlLabel,
     FormHelperText,
-    InputLabel,
-    MenuItem,
-    OutlinedInput,
     Radio,
     RadioGroup,
-    Select,
     TextField,
 } from '@mui/material';
 
