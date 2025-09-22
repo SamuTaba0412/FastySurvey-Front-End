@@ -82,7 +82,8 @@
     "cancel": "Cancelar",
     "info": "Ver más",
     "infoShow": "Información Adicional",
-    "fillOut": "Diligenciar"
+    "fillOut": "Diligenciar",
+    "saveChanged": "Los cambios han sido guardados"
   },
 
   "pagination": {
@@ -94,7 +95,9 @@
   },
 
   "validations": {
+    "existingSection": "Ya existe una sección del mismo nombre en esta encuesta",
     "requiredField": "Este campo es requerido",
+    "notEmptySections": "No puede guardar una encuesta con secciones vacias",
     "notValidDocument": "Documento no valido",
     "notValidEmail": "Correo Electrónico no valido"
   }

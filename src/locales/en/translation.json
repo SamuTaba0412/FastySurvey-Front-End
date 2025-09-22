@@ -82,7 +82,8 @@
     "cancel": "Cancel",
     "info": "View more",
     "infoShow": "Additional Information",
-    "fillOut": "Fill Out"
+    "fillOut": "Fill Out",
+    "saveChanged": "The changes were saved"
   },
 
   "pagination": {
@@ -94,7 +95,9 @@
   },
 
   "validations": {
+    "existingSection": "A section with the same name already exists in this survey",
     "requiredField": "This field is required",
+    "notEmptySections": "You cannot save the survey if it has empty sections",
     "notValidDocument": "Invalid document",
     "notValidEmail": "Invalid email"
   }

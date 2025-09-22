@@ -44,7 +44,11 @@ const PageAppBar = ({ toggleColorMode, isDrawerOpen, setIsDrawerOpen }) => {
     const isMobile = useMediaQuery(theme.breakpoints.down('md'));
 
     const { t, i18n } = useTranslation();
-    const changeLanguage = (lng) => i18n.changeLanguage(lng);
+
+    const changeLanguage = (lng) => {
+        localStorage.setItem("i18nextLng", lng);
+        navigate(0);
+    };
 
     const colorMode = localStorage.getItem('colorMode');
     const navigate = useNavigate();

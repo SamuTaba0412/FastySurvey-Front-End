@@ -28,7 +28,7 @@ const ListSurveys = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
 
-    const [openSurveyModal, setOpenSurveyModal] = useState(false);SS
+    const [openSurveyModal, setOpenSurveyModal] = useState(false);
     const [openInfoSurveyModal, setOpenInfoSurveyModal] = useState(false);
 
     const [idSurvey, setIdSurvey] = useState(0);

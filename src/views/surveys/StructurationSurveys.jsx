@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
+import { toast } from 'react-toastify';
 
 import {
     Autocomplete,
@@ -9,7 +10,6 @@ import {
     Card,
     CardContent,
     Checkbox,
-    Chip,
     Divider,
     MenuItem,
     FormControl,
@@ -31,9 +31,12 @@ import {
     Send
 } from '@mui/icons-material';
 
+import createQuestionSchema from '../../js/validations/surveys/questionSchema';
+
 const StructurationSurveys = () => {
     const { t } = useTranslation();
     const { id } = useParams();
+    const questionSchema = createQuestionSchema(t);
 
     const [survey, setSurvey] = useState({
         surveyName: "Encuesta Calidad #1",
@@ -68,13 +71,15 @@ const StructurationSurveys = () => {
 
     const [question, setQuestion] = useState({
         questionDescription: "",
-        questionType: ""
+        questionType: "",
+        options: []
     });
 
     const [errorsQuestion, setErrorsQuestion] = useState({});
 
     const [currentSection, setCurrentSection] = useState(0);
     const [changeSectionName, setChangeSectionName] = useState(false);
+    const [sectionError, setSectionError] = useState(false);
 
     const [backupName, setBackupName] = useState("");
 
@@ -95,6 +100,7 @@ const StructurationSurveys = () => {
             return updated;
         });
         setChangeSectionName(false);
+        setSectionError(false);
     };
 
     const handleNext = () => {
@@ -111,12 +117,67 @@ const StructurationSurveys = () => {
         }
     };
 
+    const validateQuestion = (data) => {
+        const parsed = questionSchema.safeParse(data);
+        if (parsed.success) {
+            setErrorsQuestion({});
+            return { ok: true, data: parsed.data };
+        }
+
+        const fieldErrors = {};
+        parsed.error.issues.forEach((issue) => {
+            const path = issue.path.join(".") || "form";
+            if (!fieldErrors[path]) fieldErrors[path] = issue.message;
+        });
+
+        setErrorsQuestion(fieldErrors);
+        return { ok: false, errors: fieldErrors };
+    };
+
+    const validateSectionName = () => {
+        const value = surveyStructure[currentSection].sectionName.trim();
+
+        if (!value) {
+            setSectionError(t('validations.requiredField'));
+            return false;
+        }
+
+        const isDuplicate = surveyStructure.some(
+            (section, index) =>
+                index !== currentSection &&
+                section.sectionName.trim().toLowerCase() === value.toLowerCase()
+        );
+
+        if (isDuplicate) {
+            setSectionError(t('validations.existingSection'));
+            return false;
+        }
+
+        setSectionError(false);
+        return true;
+    };
+
     const addQuestion = () => {
+        const res = validateQuestion(question);
+        if (!res.ok) return;
+
         const questions = surveyStructure[currentSection].sectionQuestions;
         questions.push(question);
 
         emptyQuestion();
         console.log(surveyStructure);
+    };
+
+    const saveChanges = () => {
+        for (let i = 0; i < surveyStructure.length; i++) {
+            if (surveyStructure[i].sectionQuestions.length === 0) {
+                toast.error(t('validations.notEmptySections'));
+
+                return;
+            }
+        }
+
+        toast.success(t('actions.saveChanged'));
     };
 
     const emptyQuestion = () => {
@@ -128,6 +189,7 @@ const StructurationSurveys = () => {
 
     const handleSectionNameChange = (event) => {
         const { value } = event.target;
+
         setSurveyStructure((prev) => {
             const updated = [...prev];
             updated[currentSection] = {
@@ -136,15 +198,36 @@ const StructurationSurveys = () => {
             };
             return updated;
         });
+
+        const isDuplicate = surveyStructure.some(
+            (section, index) => index !== currentSection && section.sectionName.trim().toLowerCase() === value.trim().toLowerCase()
+        );
+
+        if (value.trim() && !isDuplicate) {
+            setSectionError(false);
+        }
     };
 
     const handleQuestionChange = (e) => {
         const { name, value } = e.target;
 
-        setQuestion((prev) => ({
-            ...prev,
-            [name]: value,
-        }));
+        setQuestion((prev) => {
+            let updated = { ...prev, [name]: value };
+
+            if (name === "questionType" && !["5", "6", "7"].includes(value)) {
+                delete updated.options;
+
+                if (errorsQuestion.options) {
+                    setErrorsQuestion((prev) => {
+                        const newErr = { ...prev };
+                        delete newErr.options;
+                        return newErr;
+                    });
+                }
+            }
+
+            return updated;
+        });
 
         if (errorsQuestion[name]) {
             setErrorsQuestion((prev) => {
@@ -173,7 +256,7 @@ const StructurationSurveys = () => {
                                 </>
                             ) : (
                                 <>
-                                    <FormControl>
+                                    <FormControl error={Boolean(sectionError)}>
                                         <TextField
                                             id="sectionName"
                                             name="sectionName"
@@ -182,13 +265,21 @@ const StructurationSurveys = () => {
                                             required
                                             value={surveyStructure[currentSection].sectionName}
                                             onChange={handleSectionNameChange}
+                                            error={Boolean(sectionError)}
                                         />
+                                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                                            {sectionError || " "}
+                                        </FormHelperText>
                                     </FormControl>
 
                                     <IconButton
                                         size="large"
                                         color="success"
-                                        onClick={() => setChangeSectionName(false)}
+                                        onClick={() => {
+                                            if (validateSectionName()) {
+                                                setChangeSectionName(false);
+                                            }
+                                        }}
                                     >
                                         <SaveAs />
                                     </IconButton>
@@ -203,7 +294,7 @@ const StructurationSurveys = () => {
                             )}
                         </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2 }}>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
                         <FormControl sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.questionType)}>
                             <InputLabel id="questionTypeLabel">{t('survey.questionType')}</InputLabel>
                             <Select
@@ -228,7 +319,7 @@ const StructurationSurveys = () => {
                             </FormHelperText>
                         </FormControl>
 
-                        <FormControl sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.questionType)}>
+                        <FormControl sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.questionDescription)}>
                             <TextField
                                 id="questionDescription"
                                 name="questionDescription"
@@ -236,46 +327,58 @@ const StructurationSurveys = () => {
                                 variant="outlined"
                                 value={question.questionDescription}
                                 onChange={handleQuestionChange}
-                                error={Boolean(errorsQuestion.questionType)}
+                                error={Boolean(errorsQuestion.questionDescription)}
                             />
                             <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
-                                {errorsQuestion.questionType || " "}
+                                {errorsQuestion.questionDescription || " "}
                             </FormHelperText>
                         </FormControl>
                     </Box>
 
                     {
                         (question.questionType === "5" || question.questionType === "6" || question.questionType === "7") && (
-                            <FormControl fullWidth sx={{ flex: 1, minWidth: 250 }}>
-                                <Autocomplete
-                                    multiple
-                                    freeSolo
-                                    options={[]}
-                                    value={question.options || []}
-                                    onChange={(event, newValue) => {
-                                        setQuestion((prev) => ({
-                                            ...prev,
-                                            options: newValue,
-                                        }));
-                                    }}
-                                    renderInput={(params) => (
-                                        <TextField
-                                            {...params}
-                                            variant="outlined"
-                                            label={t("survey.surveyAnswers")}
-                                            placeholder={t("survey.answersTip")}
-                                        />
-                                    )}
-                                />
-                                <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
-                                    {errorsQuestion.questionType || " "}
-                                </FormHelperText>
-                            </FormControl>
+                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2, mb: 2 }}>
+                                <FormControl fullWidth sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.options)}>
+                                    <Autocomplete
+                                        multiple
+                                        freeSolo
+                                        options={[]}
+                                        value={question.options || []}
+                                        onChange={(event, newValue) => {
+                                            setQuestion((prev) => ({
+                                                ...prev,
+                                                options: newValue,
+                                            }));
 
+                                            if (newValue.length > 0 && errorsQuestion.options) {
+                                                setErrorsQuestion((prev) => {
+                                                    const updated = { ...prev };
+                                                    delete updated.options;
+                                                    return updated;
+                                                });
+                                            }
+                                        }}
+                                        renderInput={(params) => (
+                                            <div>
+                                                <TextField
+                                                    {...params}
+                                                    variant="outlined"
+                                                    label={t("survey.surveyAnswers")}
+                                                    placeholder={t("survey.answersTip")}
+                                                    error={Boolean(errorsQuestion.options)}
+                                                />
+                                                <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                                                    {errorsQuestion.options || " "}
+                                                </FormHelperText>
+                                            </div>
+                                        )}
+                                    />
+                                </FormControl>
+                            </Box>
                         )
                     }
 
-                    <Box sx={{ display: "flex", justifyContent: "end" }} gap={1}>
+                    <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }} gap={1}>
                         <Button
                             color="success"
                             variant="contained"
@@ -336,7 +439,12 @@ const StructurationSurveys = () => {
                 </CardContent>
             </Card>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }} gap={1}>
-                <Button color="success" variant="contained" startIcon={<Send />}>
+                <Button
+                    color="success"
+                    variant="contained"
+                    startIcon={<Send />}
+                    onClick={saveChanges}
+                >
                     {t('survey.saveChanges')}
                 </Button>
             </Box>

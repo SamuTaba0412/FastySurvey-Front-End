@@ -14,7 +14,7 @@ import {
 } from '@mui/material';
 
 import PageModal from '../../components/PageModal';
-import createSurveySchema from '../../js/validations/surveySchema';
+import createSurveySchema from '../../js/validations/surveys/surveySchema';
 
 const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
     const { t } = useTranslation();
