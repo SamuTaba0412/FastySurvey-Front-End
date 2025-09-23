@@ -141,8 +141,7 @@ const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
                             </IconButton>
                         }
                     >
-                        Para poder asignar encuestas después de su creación o edición, es necesario estructurarlas previamente. Asegúrese
-                        de agregar al menos una sección desde la opción "<strong>Estructurar Encuestas</strong>" (ícono de engranaje).
+                        {t('survey.structurationReminder')}
                     </Alert>
                 </Collapse>
                 <Grid container spacing={2} alignItems="center" columns={{ xs: 4, sm: 8, md: 12 }}>

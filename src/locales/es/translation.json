@@ -27,10 +27,13 @@
   },
 
   "survey": {
+    "saveReminder": "Recuerde que, después de realizar cualquier modificación en la encuesta, debe hacer clic en el botón \"Guardar cambios\", de lo contrario, las modificaciones no se conservarán. Además, las preguntas de tipo \"Header\" no se consideran preguntas válidas al momento de guardar.",
+    "structurationReminder": "Para poder asignar encuestas después de su creación o edición, es necesario estructurarlas previamente. Asegúrese de agregar al menos una sección desde la opción \"Estructurar Encuestas\" (ícono de engranaje).",
     "answersTip": "Escriba y pulse ENTER para ingresar la respuesta",
     "addSurvey": "Agregar Encuesta",
     "addSection": "Agregar Sección",
     "deleteSection": "Eliminar Sección",
+    "confirmDeleteSection": "Esta sección tiene preguntas asignadas, esta seguro que la desea eliminar?",
     "editSurvey": "Editar Encuesta",
     "addTerms": "Agregar términos y condiciones?",
     "introductionText": "Texto Introductorio",

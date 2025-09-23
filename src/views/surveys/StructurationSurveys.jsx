@@ -33,6 +33,8 @@ import {
     Send
 } from '@mui/icons-material';
 
+import DeleteSections from './DeleteSections';
+
 import createQuestionSchema from '../../js/validations/surveys/questionSchema';
 
 const StructurationSurveys = () => {
@@ -83,6 +85,7 @@ const StructurationSurveys = () => {
     const [lastSection, setLastSection] = useState(0);
     const [changeSectionName, setChangeSectionName] = useState(false);
     const [sectionError, setSectionError] = useState(false);
+    const [deleteSectionConfirm, setDeleteSectionConfirm] = useState(false);
 
     const [backupName, setBackupName] = useState("");
     const [newSection, setNewSection] = useState(false);
@@ -198,6 +201,11 @@ const StructurationSurveys = () => {
             return;
         }
 
+        if (surveyStructure[currentSection].sectionQuestions.length > 0) setDeleteSectionConfirm(true);
+        else eraseSection(indexToDelete);
+    };
+
+    const eraseSection = (indexToDelete) => {
         const updatedSurvey = surveyStructure.filter(
             (_, index) => index !== indexToDelete
         );
@@ -207,7 +215,9 @@ const StructurationSurveys = () => {
         if (currentSection >= updatedSurvey.length) {
             setCurrentSection(updatedSurvey.length - 1);
         }
-    };
+
+        setDeleteSectionConfirm(false);
+    }
 
     const addQuestion = () => {
         const res = validateQuestion(question);
@@ -222,15 +232,20 @@ const StructurationSurveys = () => {
 
     const saveChanges = () => {
         for (let i = 0; i < surveyStructure.length; i++) {
-            if (surveyStructure[i].sectionQuestions.length === 0) {
-                toast.error(t('validations.notEmptySections'));
+            const onlyHeaders = surveyStructure[i].sectionQuestions.every(
+                (q) => q.questionType === "header"
+            );
 
+            if (surveyStructure[i].sectionQuestions.length === 0 || onlyHeaders) {
+                toast.error(t('validations.notEmptySections'));
                 return;
             }
         }
 
         toast.success(t('actions.saveChanged'));
     };
+
+
 
     const emptyQuestion = () => {
         setQuestion({
@@ -391,9 +406,7 @@ const StructurationSurveys = () => {
                                     </IconButton>
                                 }
                             >
-                                Recuerde que, después de realizar cualquier modificación en la encuesta,
-                                es necesario hacer clic en el botón <strong>“Guardar Cambios”</strong>.
-                                De lo contrario, los cambios no serán conservados.
+                                {t('survey.saveReminder')}
                             </Alert>
                         </Collapse>
                     </Box>
@@ -535,6 +548,12 @@ const StructurationSurveys = () => {
                     {t('survey.saveChanges')}
                 </Button>
             </Box>
+
+            <DeleteSections
+                open={deleteSectionConfirm}
+                onClose={() => setDeleteSectionConfirm(false)}
+                erase={() => { eraseSection(currentSection) }}
+            />
         </>
     );
 };
