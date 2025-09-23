@@ -29,6 +29,8 @@
   "survey": {
     "answersTip": "Escriba y pulse ENTER para ingresar la respuesta",
     "addSurvey": "Agregar Encuesta",
+    "addSection": "Agregar Sección",
+    "deleteSection": "Eliminar Sección",
     "editSurvey": "Editar Encuesta",
     "addTerms": "Agregar términos y condiciones?",
     "introductionText": "Texto Introductorio",
@@ -38,6 +40,7 @@
     "helperSelectGroup": "Seleccione un grupo para filtrar",
     "questionType": "Tipo de Pregunta",
     "questionDescription": "Descripción de la Pregunta",
+    "pageInfo": "Pág. {{current}} de {{total}}",
     "saveChanges": "Guardar Cambios",
     "surveyAnswers": "Respuestas",
     "surveyType": "Tipo De Encuesta",
@@ -83,6 +86,7 @@
     "info": "Ver más",
     "infoShow": "Información Adicional",
     "fillOut": "Diligenciar",
+    "rename": "Renombrar",
     "saveChanged": "Los cambios han sido guardados"
   },
 
@@ -96,6 +100,7 @@
 
   "validations": {
     "existingSection": "Ya existe una sección del mismo nombre en esta encuesta",
+    "needOneSection": "Tiene que haber almenos una sección",
     "requiredField": "Este campo es requerido",
     "notEmptySections": "No puede guardar una encuesta con secciones vacias",
     "notValidDocument": "Documento no valido",

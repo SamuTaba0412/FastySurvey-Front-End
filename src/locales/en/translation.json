@@ -29,6 +29,8 @@
   "survey": {
     "answersTip": "Write it and press ENTER to enter your answer",
     "addSurvey": "Add Survey",
+    "addSection": "Add Section",
+    "deleteSection": "Delete Section",
     "editSurvey": "Edit Survey",
     "addTerms": "Add terms and conditions?",
     "introductionText": "Introductory Text",
@@ -38,6 +40,7 @@
     "helperSelectGroup": "Select a group to filter",
     "questionType": "Question Type",
     "questionDescription": "Question Description",
+    "pageInfo": "Page {{current}} of {{total}}",
     "saveChanges": "Save Changes",
     "surveyAnswers": "Answers",
     "surveyType": "Survey Type",
@@ -83,6 +86,7 @@
     "info": "View more",
     "infoShow": "Additional Information",
     "fillOut": "Fill Out",
+    "rename": "Rename",
     "saveChanged": "The changes were saved"
   },
 
@@ -96,6 +100,7 @@
 
   "validations": {
     "existingSection": "A section with the same name already exists in this survey",
+    "needOneSection": "There must be at least one section",
     "requiredField": "This field is required",
     "notEmptySections": "You cannot save the survey if it has empty sections",
     "notValidDocument": "Invalid document",

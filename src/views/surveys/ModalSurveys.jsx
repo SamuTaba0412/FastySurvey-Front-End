@@ -3,15 +3,20 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import {
+    Alert,
+    Collapse,
     Grid,
     FormLabel,
     FormControl,
     FormControlLabel,
     FormHelperText,
+    IconButton,
     Radio,
     RadioGroup,
     TextField,
 } from '@mui/material';
+
+import { Close } from '@mui/icons-material';
 
 import PageModal from '../../components/PageModal';
 import createSurveySchema from '../../js/validations/surveys/surveySchema';
@@ -19,7 +24,7 @@ import createSurveySchema from '../../js/validations/surveys/surveySchema';
 const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
     const { t } = useTranslation();
     const surveySchema = createSurveySchema(t);
-    
+
     const initialSurveyState = {
         surveyName: "",
         introductionText: "",
@@ -29,6 +34,8 @@ const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
 
     const [infoSurvey, setInfoSurvey] = useState(initialSurveyState);
     const [errors, setErrors] = useState({});
+
+    const [visibleAlert, setVisibleAlert] = useState({});
 
     const validate = (data) => {
         const parsed = surveySchema.safeParse(data);
@@ -79,6 +86,8 @@ const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
     };
 
     useEffect(() => {
+        setVisibleAlert(true);
+
         if (!open) return;
 
         if (idSurvey == 0) {
@@ -114,6 +123,28 @@ const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
                 cancelText={t('actions.cancel')}
                 showActions
             >
+                <Collapse in={visibleAlert}>
+                    <Alert
+                        variant="outlined"
+                        severity="info"
+                        sx={{ alignItems: "center", mb: 3 }}
+                        action={
+                            <IconButton
+                                aria-label="close"
+                                color="inherit"
+                                size="small"
+                                onClick={() => {
+                                    setVisibleAlert(false);
+                                }}
+                            >
+                                <Close fontSize="inherit" />
+                            </IconButton>
+                        }
+                    >
+                        Para poder asignar encuestas después de su creación o edición, es necesario estructurarlas previamente. Asegúrese
+                        de agregar al menos una sección desde la opción "<strong>Estructurar Encuestas</strong>" (ícono de engranaje).
+                    </Alert>
+                </Collapse>
                 <Grid container spacing={2} alignItems="center" columns={{ xs: 4, sm: 8, md: 12 }}>
                     <Grid size={{ xs: 6, sm: 12, md: 12 }}>
                         <FormControl fullWidth error={Boolean(errors.surveyName)}>

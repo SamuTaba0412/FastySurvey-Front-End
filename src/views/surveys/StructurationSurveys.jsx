@@ -4,16 +4,15 @@ import { useTranslation } from 'react-i18next';
 import { toast } from 'react-toastify';
 
 import {
+    Alert,
     Autocomplete,
     Box,
     Button,
     Card,
     CardContent,
-    Checkbox,
-    Divider,
+    Collapse,
     MenuItem,
     FormControl,
-    FormGroup,
     FormHelperText,
     IconButton,
     InputLabel,
@@ -21,12 +20,15 @@ import {
     Select,
     TextField,
     Typography,
+    Tooltip,
 } from '@mui/material';
 
 import {
     Add,
     Cancel,
+    Close,
     Edit,
+    Delete,
     SaveAs,
     Send
 } from '@mui/icons-material';
@@ -45,8 +47,8 @@ const StructurationSurveys = () => {
     });
 
     const [questionTypes, setQuestionTypes] = useState([
-        { id: "1", label: "Encabezado" },
-        { id: "2", label: "Texto" },
+        { id: "1", label: "Header" },
+        { id: "2", label: "Text" },
         { id: "3", label: "TextArea" },
         { id: "4", label: "DateTime" },
         { id: "5", label: "ComboBox" },
@@ -78,27 +80,43 @@ const StructurationSurveys = () => {
     const [errorsQuestion, setErrorsQuestion] = useState({});
 
     const [currentSection, setCurrentSection] = useState(0);
+    const [lastSection, setLastSection] = useState(0);
     const [changeSectionName, setChangeSectionName] = useState(false);
     const [sectionError, setSectionError] = useState(false);
 
     const [backupName, setBackupName] = useState("");
+    const [newSection, setNewSection] = useState(false);
+    const [disableButtons, setDisableButtons] = useState(false);
+    const [visibleAlert, setVisibleAlert] = useState(true);
 
     const toggleSectionName = () => {
         if (!changeSectionName) {
             setBackupName(surveyStructure[currentSection].sectionName);
         }
         setChangeSectionName(!changeSectionName);
+        setDisableButtons(true);
     };
 
     const handleCancelSection = () => {
-        setSurveyStructure((prev) => {
-            const updated = [...prev];
-            updated[currentSection] = {
-                ...updated[currentSection],
-                sectionName: backupName
-            };
-            return updated;
-        });
+        if (newSection) {
+            deleteSection(currentSection);
+            setCurrentSection(lastSection);
+
+            setLastSection(0);
+            setNewSection(false);
+        }
+        else {
+            setSurveyStructure((prev) => {
+                const updated = [...prev];
+                updated[currentSection] = {
+                    ...updated[currentSection],
+                    sectionName: backupName
+                };
+                return updated;
+            });
+        }
+
+        setDisableButtons(false);
         setChangeSectionName(false);
         setSectionError(false);
     };
@@ -155,6 +173,40 @@ const StructurationSurveys = () => {
 
         setSectionError(false);
         return true;
+    };
+
+    const addSection = () => {
+        const newSection = {
+            sectionName: "",
+            sectionQuestions: []
+        };
+
+        setLastSection(currentSection);
+
+        const updatedSurvey = [...surveyStructure, newSection];
+
+        setSurveyStructure(updatedSurvey);
+        setCurrentSection(updatedSurvey.length - 1);
+        setChangeSectionName(true);
+        setNewSection(true);
+        setDisableButtons(true);
+    };
+
+    const deleteSection = (indexToDelete) => {
+        if (surveyStructure.length === 1) {
+            toast.error(t('validations.needOneSection'));
+            return;
+        }
+
+        const updatedSurvey = surveyStructure.filter(
+            (_, index) => index !== indexToDelete
+        );
+
+        setSurveyStructure(updatedSurvey);
+
+        if (currentSection >= updatedSurvey.length) {
+            setCurrentSection(updatedSurvey.length - 1);
+        }
     };
 
     const addQuestion = () => {
@@ -242,17 +294,33 @@ const StructurationSurveys = () => {
         <>
             <Card variant="elevation">
                 <CardContent>
-                    <Box sx={{ display: "flex", alignItems: "center", gap: 1 }}>
-                        <Typography variant="h4" gutterBottom>
+                    <Box
+                        sx={{
+                            display: "flex",
+                            justifyContent: "space-between",
+                            alignItems: "center"
+                        }}
+                    >
+                        <Typography
+                            variant="h4"
+                            gutterBottom
+                            sx={{
+                                fontSize: {
+                                    xs: "1.5rem",
+                                    sm: "2.0rem",
+                                    md: "2.5rem"
+                                }
+                            }}
+                        >
+
                             {!changeSectionName ? (
                                 <>
                                     {surveyStructure[currentSection].sectionName}
-                                    <IconButton
-                                        size="large"
-                                        onClick={toggleSectionName}
-                                    >
-                                        <Edit />
-                                    </IconButton>
+                                    <Tooltip title={t('actions.rename')}>
+                                        <IconButton size="large" onClick={toggleSectionName}>
+                                            <Edit />
+                                        </IconButton>
+                                    </Tooltip>
                                 </>
                             ) : (
                                 <>
@@ -278,23 +346,58 @@ const StructurationSurveys = () => {
                                         onClick={() => {
                                             if (validateSectionName()) {
                                                 setChangeSectionName(false);
+                                                setDisableButtons(false);
                                             }
                                         }}
                                     >
                                         <SaveAs />
                                     </IconButton>
-                                    <IconButton
-                                        size="large"
-                                        color="error"
-                                        onClick={handleCancelSection}
-                                    >
+                                    <IconButton size="large" color="error" onClick={handleCancelSection}>
                                         <Cancel />
                                     </IconButton>
                                 </>
                             )}
                         </Typography>
+
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                            <Tooltip title={t('survey.deleteSection')}>
+                                <IconButton color="error" onClick={() => deleteSection(currentSection)} disabled={disableButtons}>
+                                    <Delete />
+                                </IconButton>
+                            </Tooltip>
+                            <Tooltip title={t('survey.addSection')}>
+                                <IconButton color="success" onClick={addSection} disabled={disableButtons}>
+                                    <Add />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
                     </Box>
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2 }}>
+                    <Box>
+                        <Collapse in={visibleAlert}>
+                            <Alert
+                                variant="outlined"
+                                severity="warning"
+                                sx={{ alignItems: "center" }}
+                                action={
+                                    <IconButton
+                                        aria-label="close"
+                                        color="inherit"
+                                        size="small"
+                                        onClick={() => {
+                                            setVisibleAlert(false);
+                                        }}
+                                    >
+                                        <Close fontSize="inherit" />
+                                    </IconButton>
+                                }
+                            >
+                                Recuerde que, después de realizar cualquier modificación en la encuesta,
+                                es necesario hacer clic en el botón <strong>“Guardar Cambios”</strong>.
+                                De lo contrario, los cambios no serán conservados.
+                            </Alert>
+                        </Collapse>
+                    </Box>
+                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 3 }}>
                         <FormControl sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.questionType)}>
                             <InputLabel id="questionTypeLabel">{t('survey.questionType')}</InputLabel>
                             <Select
@@ -384,58 +487,41 @@ const StructurationSurveys = () => {
                             variant="contained"
                             startIcon={<Add />}
                             onClick={addQuestion}
+                            disabled={disableButtons}
                         >
                             {t('user.add')}
                         </Button>
                     </Box>
 
-                    <Box sx={{ display: "flex", justifyContent: "end", gap: 1, mt: 2 }}>
-                        {currentSection > 0 && (
-                            <Button
-                                color="secondary"
-                                variant="contained"
-                                onClick={() => {
-                                    if (changeSectionName) handleCancelSection();
-                                    handlePrevious();
-                                }}
-                            >
-                                {t('navigation.previous')}
-                            </Button>
-                        )}
-
-                        {currentSection < surveyStructure.length - 1 && (
-                            <Button
-                                color="secondary"
-                                variant="contained"
-                                onClick={() => {
-                                    if (changeSectionName) handleCancelSection();
-                                    handleNext();
-                                }}
-                            >
-                                {t('navigation.next')}
-                            </Button>
-                        )}
-                    </Box>
-                    {/* <Typography variant="h4" sx={{ display: 'flex', justifyContent: 'center' }} gutterBottom>
-                        {survey.surveyName}
-                    </Typography> */}
-                    {/* <Box sx={{ mt: 2 }}>
-                        <Typography variant="body1" component="p" gutterBottom>
-                            {survey.introductionText}
+                    <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
+                        <Typography variant="body2" color="secondary">
+                            {t('survey.pageInfo', { current: currentSection + 1, total: surveyStructure.length })}
                         </Typography>
 
-                        {survey.termsConditions && (
-                            <div>
-                                <Typography sx={{ mt: 3 }} variant="body1" component="p" gutterBottom>
-                                    {survey.termsConditions}
-                                </Typography>
+                        <Box sx={{ display: "flex", gap: 1 }}>
+                            {currentSection > 0 && (
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    onClick={handlePrevious}
+                                    disabled={disableButtons}
+                                >
+                                    {t('navigation.previous')}
+                                </Button>
+                            )}
 
-                                <FormGroup>
-                                    <FormControlLabel control={<Checkbox />} label="Label" />
-                                </FormGroup>
-                            </div>
-                        )}
-                    </Box> */}
+                            {currentSection < surveyStructure.length - 1 && (
+                                <Button
+                                    color="secondary"
+                                    variant="contained"
+                                    onClick={handleNext}
+                                    disabled={disableButtons}
+                                >
+                                    {t('navigation.next')}
+                                </Button>
+                            )}
+                        </Box>
+                    </Box>
                 </CardContent>
             </Card>
             <Box sx={{ display: "flex", justifyContent: "center", mt: 3 }} gap={1}>
@@ -444,6 +530,7 @@ const StructurationSurveys = () => {
                     variant="contained"
                     startIcon={<Send />}
                     onClick={saveChanges}
+                    disabled={disableButtons}
                 >
                     {t('survey.saveChanges')}
                 </Button>
