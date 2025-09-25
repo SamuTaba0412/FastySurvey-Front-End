@@ -10,21 +10,35 @@ import {
     Button,
     Card,
     CardContent,
+    Checkbox,
     Collapse,
     MenuItem,
+    FormControlLabel,
     FormControl,
+    FormLabel,
     FormHelperText,
     IconButton,
     InputLabel,
+    Radio,
+    RadioGroup,
     OutlinedInput,
     Select,
     TextField,
     Typography,
     Tooltip,
+    Divider,
+    FormGroup,
 } from '@mui/material';
+
+import { DemoContainer } from '@mui/x-date-pickers/internals/demo';
+import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
+import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
+import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 
 import {
     Add,
+    ArrowUpward,
+    ArrowDownward,
     Cancel,
     Close,
     Edit,
@@ -230,6 +244,59 @@ const StructurationSurveys = () => {
         console.log(surveyStructure);
     };
 
+    const handleDeleteQuestion = (index) => {
+        setSurveyStructure((prev) => {
+            const updated = [...prev];
+            updated[currentSection].sectionQuestions.splice(index, 1);
+            return updated;
+        });
+    };
+
+    // const handleEditQuestion = (index) => {
+    //     const q = surveyStructure[currentSection].sectionQuestions[index];
+    //     setQuestion(q);
+    // };
+
+    const moveQuestionUp = (index) => {
+        if (index === 0) return; // ya está arriba
+        setSurveyStructure((prev) => {
+            const updated = [...prev];
+            const questions = [...updated[currentSection].sectionQuestions];
+
+            // intercambio de posiciones
+            const temp = questions[index - 1];
+            questions[index - 1] = questions[index];
+            questions[index] = temp;
+
+            updated[currentSection] = {
+                ...updated[currentSection],
+                sectionQuestions: questions,
+            };
+
+            return updated;
+        });
+    };
+
+    const moveQuestionDown = (index) => {
+        setSurveyStructure((prev) => {
+            const updated = [...prev];
+            const questions = [...updated[currentSection].sectionQuestions];
+
+            if (index < questions.length - 1) {
+                const temp = questions[index + 1];
+                questions[index + 1] = questions[index];
+                questions[index] = temp;
+            }
+
+            updated[currentSection] = {
+                ...updated[currentSection],
+                sectionQuestions: questions,
+            };
+
+            return updated;
+        });
+    };
+
     const saveChanges = () => {
         for (let i = 0; i < surveyStructure.length; i++) {
             const onlyHeaders = surveyStructure[i].sectionQuestions.every(
@@ -244,8 +311,6 @@ const StructurationSurveys = () => {
 
         toast.success(t('actions.saveChanged'));
     };
-
-
 
     const emptyQuestion = () => {
         setQuestion({
@@ -410,6 +475,182 @@ const StructurationSurveys = () => {
                             </Alert>
                         </Collapse>
                     </Box>
+
+                    {
+                        surveyStructure[currentSection].sectionQuestions.map((section, idx) => {
+                            let questionContent;
+
+                            switch (section.questionType) {
+                                case "1":
+                                    questionContent = (
+                                        <Typography variant="h5" gutterBottom>
+                                            {section.questionDescription}
+                                        </Typography>
+                                    );
+                                    break;
+                                case "2":
+                                    questionContent = (
+                                        <FormControl fullWidth>
+                                            <TextField
+                                                id={`${section.questionDescription}-${idx}`}
+                                                name={`${section.questionDescription}-${idx}`}
+                                                label={section.questionDescription}
+                                                variant="outlined"
+                                                disabled
+                                            />
+                                        </FormControl>
+                                    );
+                                    break;
+                                case "3":
+                                    questionContent = (
+                                        <FormControl fullWidth>
+                                            <TextField
+                                                id={`${section.questionDescription}-${idx}`}
+                                                name={`${section.questionDescription}-${idx}`}
+                                                label={section.questionDescription}
+                                                variant="outlined"
+                                                multiline
+                                                rows={4}
+                                                disabled
+                                            />
+                                        </FormControl>
+                                    );
+                                    break;
+                                case "4":
+                                    questionContent = (
+                                        <LocalizationProvider dateAdapter={AdapterDayjs}>
+                                            <DemoContainer components={['DatePicker']} sx={{ width: "100%" }}>
+                                                <DatePicker
+                                                    id={`${section.questionDescription}-${idx}`}
+                                                    name={`${section.questionDescription}-${idx}`}
+                                                    label={section.questionDescription}
+                                                    slotProps={{
+                                                        textField: { fullWidth: true }
+                                                    }}
+                                                    disabled
+                                                />
+                                            </DemoContainer>
+                                        </LocalizationProvider>
+                                    );
+                                    break;
+                                case "5":
+                                    questionContent = (
+                                        <FormControl fullWidth>
+                                            <InputLabel id={`label-${section.questionDescription}-${idx}`}>{section.questionDescription}</InputLabel>
+                                            <Select
+                                                labelId={`label-${section.questionDescription}-${idx}`}
+                                                id={`${section.questionDescription}-${idx}`}
+                                                name={`${section.questionDescription}-${idx}`}
+                                                input={<OutlinedInput label={section.questionDescription} />}
+                                            >
+                                                {section.options.map((option, idx) => (
+                                                    <MenuItem key={idx} disabled>{option}</MenuItem>
+                                                ))}
+                                            </Select>
+                                        </FormControl>
+                                    );
+                                    break;
+                                case "6":
+                                    questionContent = (
+                                        <FormControl fullWidth>
+                                            <FormLabel id={`label-${section.questionDescription}-${idx}`}>{section.questionDescription}</FormLabel>
+                                            <RadioGroup
+                                                aria-labelledby={`label-${section.questionDescription}-${idx}`}
+                                                name={`${section.questionDescription}-${idx}`}
+                                            >
+                                                {section.options.map((option, idx) => (
+                                                    <FormControlLabel key={idx} value={idx} control={<Radio />} label={option} disabled />
+                                                ))}
+                                            </RadioGroup>
+                                        </FormControl>
+                                    );
+                                    break;
+                                case "7":
+                                    questionContent = (
+                                        <FormControl fullWidth>
+                                            <FormLabel id={`label-${section.questionDescription}-${idx}`}>{section.questionDescription}</FormLabel>
+                                            <FormGroup
+                                                aria-labelledby={`label-${section.questionDescription}-${idx}`}
+                                                name={`${section.questionDescription}-${idx}`}
+                                            >
+                                                {section.options.map((option, idx) => (
+                                                    <FormControlLabel key={idx} value={idx} control={<Checkbox />} label={option} disabled />
+                                                ))}
+                                            </FormGroup>
+                                        </FormControl>
+                                    );
+                                    break;
+                                default:
+                                    questionContent = null;
+                                    break;
+                            }
+
+                            return (
+                                <Box
+                                    key={idx}
+                                    sx={{
+                                        mt: 3,
+                                        mb: 3,
+                                        display: "flex",
+                                        alignItems: "center",
+                                        justifyContent: "space-between",
+                                        gap: 2,
+                                    }}
+                                >
+                                    <Box sx={{ flex: 1 }}>{questionContent}</Box>
+
+                                    {/* Botones de acciones */}
+                                    <Box sx={{ display: "flex", gap: 1 }}>
+                                        {/* <Tooltip title={t("actions.edit")}>
+                                            <IconButton
+                                                color="primary"
+                                                onClick={() => handleEditQuestion(idx)}
+                                            >
+                                                <Edit />
+                                            </IconButton>
+                                        </Tooltip> */}
+
+                                        {/* Eliminar */}
+                                        <Tooltip title={t("actions.delete")}>
+                                            <IconButton
+                                                color="error"
+                                                onClick={() => handleDeleteQuestion(idx)}
+                                            >
+                                                <Delete />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        {/* Subir */}
+                                        <Tooltip title={t("actions.moveUp")}>
+                                            <IconButton
+                                                color="secondary"
+                                                disabled={idx === 0}
+                                                onClick={() => moveQuestionUp(idx)}
+                                            >
+                                                <ArrowUpward />
+                                            </IconButton>
+                                        </Tooltip>
+
+                                        {/* Bajar */}
+                                        <Tooltip title={t("actions.moveDown")}>
+                                            <IconButton
+                                                color="secondary"
+                                                disabled={idx === surveyStructure[currentSection].sectionQuestions.length - 1}
+                                                onClick={() => moveQuestionDown(idx)}
+                                            >
+                                                <ArrowDownward />
+                                            </IconButton>
+                                        </Tooltip>
+                                    </Box>
+                                </Box>
+                            );
+                        })
+                    }
+
+                    {surveyStructure[currentSection].sectionQuestions.length > 0 && (
+                        <Divider />
+                    )}
+
                     <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 3 }}>
                         <FormControl sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.questionType)}>
                             <InputLabel id="questionTypeLabel">{t('survey.questionType')}</InputLabel>
