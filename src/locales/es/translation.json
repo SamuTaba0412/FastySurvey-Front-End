@@ -83,6 +83,9 @@
   },
 
   "actions": {
+    "delete": "Eliminar",
+    "moveUp": "Mover Arriba",
+    "moveDown": "Mover Abajo",
     "save": "Guardar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
@@ -107,6 +110,7 @@
     "requiredField": "Este campo es requerido",
     "notEmptySections": "No puede guardar una encuesta con secciones vacias",
     "notValidDocument": "Documento no valido",
-    "notValidEmail": "Correo Electrónico no valido"
+    "notValidEmail": "Correo Electrónico no valido",
+    "duplicatedQuestion": "No puede haber mas de una pregunta igual en la misma sección"
   }
 }

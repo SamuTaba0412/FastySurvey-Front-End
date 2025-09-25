@@ -70,7 +70,7 @@ const StructurationSurveys = () => {
     const saveChanges = () => {
         for (let i = 0; i < surveyStructure.length; i++) {
             const onlyHeaders = surveyStructure[i].sectionQuestions.every(
-                (q) => q.questionType === "header"
+                (q) => q.questionType === "1"
             );
 
             if (surveyStructure[i].sectionQuestions.length === 0 || onlyHeaders) {
@@ -110,49 +110,6 @@ const StructurationSurveys = () => {
                         disableButtons={disableButtons}
                         questionTypes={questionTypes}
                     />
-
-                    {
-                        (question.questionType === "5" || question.questionType === "6" || question.questionType === "7") && (
-                            <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2, mb: 2 }}>
-                                <FormControl fullWidth sx={{ flex: 1, minWidth: 250 }} error={Boolean(errorsQuestion.options)}>
-                                    <Autocomplete
-                                        multiple
-                                        freeSolo
-                                        options={[]}
-                                        value={question.options || []}
-                                        onChange={(event, newValue) => {
-                                            setQuestion((prev) => ({
-                                                ...prev,
-                                                options: newValue,
-                                            }));
-
-                                            if (newValue.length > 0 && errorsQuestion.options) {
-                                                setErrorsQuestion((prev) => {
-                                                    const updated = { ...prev };
-                                                    delete updated.options;
-                                                    return updated;
-                                                });
-                                            }
-                                        }}
-                                        renderInput={(params) => (
-                                            <div>
-                                                <TextField
-                                                    {...params}
-                                                    variant="outlined"
-                                                    label={t("survey.surveyAnswers")}
-                                                    placeholder={t("survey.answersTip")}
-                                                    error={Boolean(errorsQuestion.options)}
-                                                />
-                                                <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
-                                                    {errorsQuestion.options || " "}
-                                                </FormHelperText>
-                                            </div>
-                                        )}
-                                    />
-                                </FormControl>
-                            </Box>
-                        )
-                    }
 
                     <Box sx={{ display: "flex", justifyContent: "space-between", alignItems: "center", mt: 2 }}>
                         <Typography variant="body2" color="secondary">

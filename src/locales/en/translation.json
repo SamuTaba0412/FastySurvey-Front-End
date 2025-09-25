@@ -52,7 +52,8 @@
     "surveyDeleted": "Survey deleted succesfully!",
     "structuration": "Structurate",
     "termsConditions": "Terms and Conditions",
-    "deathline": "Deathline"
+    "deathline": "Deathline",
+    "duplicatedQuestion": "There cannot be more than one question in the same section"
   },
 
   "user": {
@@ -83,6 +84,9 @@
   },
 
   "actions": {
+    "delete": "Delete",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
     "save": "Save",
     "confirm": "Confirm",
     "cancel": "Cancel",

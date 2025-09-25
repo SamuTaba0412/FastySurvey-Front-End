@@ -1,5 +1,6 @@
 import {
     Box,
+    Checkbox,
     Typography,
     Tooltip,
     IconButton,
@@ -16,7 +17,6 @@ import {
     FormControlLabel,
     Radio,
     FormGroup,
-    Checkbox,
     Button,
     Autocomplete,
 } from "@mui/material";
@@ -117,6 +117,19 @@ const QuestionManager = ({
         const res = validateQuestion(question);
         if (!res.ok) return;
 
+        const existing = surveyStructure[currentSection].sectionQuestions.some(
+            (q) =>
+                q.questionDescription.trim().toLowerCase() === question.questionDescription.trim().toLowerCase()
+        );
+
+        if (existing) {
+            setErrorsQuestion((prev) => ({
+                ...prev,
+                questionDescription: t("validations.duplicatedQuestion"),
+            }));
+            return;
+        }
+
         setSurveyStructure((prev) => {
             const updated = [...prev];
             updated[currentSection] = {
@@ -145,15 +158,11 @@ const QuestionManager = ({
         setQuestion((prev) => {
             let updated = { ...prev, [name]: value };
 
-            if (name === "questionType" && !["5", "6", "7"].includes(value)) {
-                delete updated.options;
-
-                if (errorsQuestion.options) {
-                    setErrorsQuestion((prev) => {
-                        const newErr = { ...prev };
-                        delete newErr.options;
-                        return newErr;
-                    });
+            if (name === "questionType") {
+                if (!["5", "6", "7"].includes(value)) {
+                    delete updated.options;
+                } else if (!prev.options) {
+                    updated.options = [];
                 }
             }
 
@@ -171,6 +180,7 @@ const QuestionManager = ({
 
     return (
         <>
+            {/* ================= LISTA DE PREGUNTAS EXISTENTES ================= */}
             {surveyStructure[currentSection].sectionQuestions.map((section, idx) => {
                 let questionContent;
 
@@ -186,7 +196,6 @@ const QuestionManager = ({
                         questionContent = (
                             <FormControl fullWidth>
                                 <TextField
-                                    id={`${section.questionDescription}-${idx}`}
                                     label={section.questionDescription}
                                     variant="outlined"
                                     disabled
@@ -198,7 +207,6 @@ const QuestionManager = ({
                         questionContent = (
                             <FormControl fullWidth>
                                 <TextField
-                                    id={`${section.questionDescription}-${idx}`}
                                     label={section.questionDescription}
                                     variant="outlined"
                                     multiline
@@ -211,28 +219,23 @@ const QuestionManager = ({
                     case "4":
                         questionContent = (
                             <LocalizationProvider dateAdapter={AdapterDayjs}>
-                                <DemoContainer components={["DatePicker"]} sx={{ width: "100%" }}>
-                                    <DatePicker
-                                        label={section.questionDescription}
-                                        slotProps={{ textField: { fullWidth: true } }}
-                                        disabled
-                                    />
-                                </DemoContainer>
+                                <DatePicker
+                                    label={section.questionDescription}
+                                    slotProps={{ textField: { fullWidth: true, variant: "outlined" } }}
+                                    disabled
+                                />
                             </LocalizationProvider>
                         );
                         break;
                     case "5":
                         questionContent = (
                             <FormControl fullWidth>
-                                <InputLabel id={`label-${section.questionDescription}-${idx}`}>
-                                    {section.questionDescription}
-                                </InputLabel>
+                                <InputLabel>{section.questionDescription}</InputLabel>
                                 <Select
-                                    labelId={`label-${section.questionDescription}-${idx}`}
-                                    id={`${section.questionDescription}-${idx}`}
+                                    value=""
                                     input={<OutlinedInput label={section.questionDescription} />}
                                 >
-                                    {section.options.map((option, i) => (
+                                    {section.options?.map((option, i) => (
                                         <MenuItem key={i} disabled>
                                             {option}
                                         </MenuItem>
@@ -245,8 +248,8 @@ const QuestionManager = ({
                         questionContent = (
                             <FormControl fullWidth>
                                 <FormLabel>{section.questionDescription}</FormLabel>
-                                <RadioGroup name={`${section.questionDescription}-${idx}`}>
-                                    {section.options.map((option, i) => (
+                                <RadioGroup>
+                                    {section.options?.map((option, i) => (
                                         <FormControlLabel
                                             key={i}
                                             value={i}
@@ -263,8 +266,8 @@ const QuestionManager = ({
                         questionContent = (
                             <FormControl fullWidth>
                                 <FormLabel>{section.questionDescription}</FormLabel>
-                                <FormGroup name={`${section.questionDescription}-${idx}`}>
-                                    {section.options.map((option, i) => (
+                                <FormGroup>
+                                    {section.options?.map((option, i) => (
                                         <FormControlLabel
                                             key={i}
                                             value={i}
@@ -291,34 +294,51 @@ const QuestionManager = ({
                             display: "flex",
                             alignItems: "center",
                             justifyContent: "space-between",
-                            gap: 2,
+                            gap: 1,
+                            flexWrap: "nowrap",
                         }}
                     >
-                        <Box sx={{ flex: 1 }}>{questionContent}</Box>
-                        <Box sx={{ display: "flex", gap: 1 }}>
-                            <Tooltip title={t("actions.delete")}>
-                                <IconButton color="error" onClick={() => handleDeleteQuestion(idx)}>
-                                    <Delete />
-                                </IconButton>
-                            </Tooltip>
+                        <Box sx={{ flexGrow: 1, minWidth: 0, mr: 1 }}>
+                            {questionContent}
+                        </Box>
+
+                        <Box
+                            sx={{
+                                display: "flex",
+                                flexDirection: "column",
+                                alignItems: "center",
+                                gap: 0,
+                                flexShrink: 0
+                            }}
+                        >
                             <Tooltip title={t("actions.moveUp")}>
                                 <IconButton
                                     color="secondary"
+                                    size="small" // Puedes usar size="small" para que ocupen menos
                                     disabled={idx === 0}
                                     onClick={() => moveQuestionUp(idx)}
                                 >
-                                    <ArrowUpward />
+                                    <ArrowUpward fontSize="inherit" />
                                 </IconButton>
                             </Tooltip>
                             <Tooltip title={t("actions.moveDown")}>
                                 <IconButton
                                     color="secondary"
+                                    size="small"
                                     disabled={
                                         idx === surveyStructure[currentSection].sectionQuestions.length - 1
                                     }
                                     onClick={() => moveQuestionDown(idx)}
                                 >
-                                    <ArrowDownward />
+                                    <ArrowDownward fontSize="inherit" />
+                                </IconButton>
+                            </Tooltip>
+                        </Box>
+
+                        <Box sx={{ display: "flex", flexShrink: 0, alignSelf: "center" }}>
+                            <Tooltip title={t("actions.delete")}>
+                                <IconButton color="error" onClick={() => handleDeleteQuestion(idx)}>
+                                    <Delete />
                                 </IconButton>
                             </Tooltip>
                         </Box>
@@ -375,48 +395,40 @@ const QuestionManager = ({
             {(question.questionType === "5" ||
                 question.questionType === "6" ||
                 question.questionType === "7") && (
-                    <Box sx={{ display: "flex", flexWrap: "wrap", gap: 2, mt: 2, mb: 2 }}>
-                        <FormControl
-                            fullWidth
-                            sx={{ flex: 1, minWidth: 250 }}
-                            error={Boolean(errorsQuestion.options)}
-                        >
-                            <Autocomplete
-                                multiple
-                                freeSolo
-                                options={[]}
-                                value={question.options || []}
-                                onChange={(event, newValue) => {
-                                    setQuestion((prev) => ({
-                                        ...prev,
-                                        options: newValue,
-                                    }));
+                    <FormControl fullWidth sx={{ mt: 2 }} error={Boolean(errorsQuestion.options)}>
+                        <Autocomplete
+                            multiple
+                            freeSolo
+                            options={[]}
+                            value={question.options || []}
+                            onChange={(event, newValue) => {
+                                setQuestion((prev) => ({
+                                    ...prev,
+                                    options: newValue,
+                                }));
 
-                                    if (newValue.length > 0 && errorsQuestion.options) {
-                                        setErrorsQuestion((prev) => {
-                                            const updated = { ...prev };
-                                            delete updated.options;
-                                            return updated;
-                                        });
-                                    }
-                                }}
-                                renderInput={(params) => (
-                                    <div>
-                                        <TextField
-                                            {...params}
-                                            variant="outlined"
-                                            label={t("survey.surveyAnswers")}
-                                            placeholder={t("survey.answersTip")}
-                                            error={Boolean(errorsQuestion.options)}
-                                        />
-                                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
-                                            {errorsQuestion.options || " "}
-                                        </FormHelperText>
-                                    </div>
-                                )}
-                            />
-                        </FormControl>
-                    </Box>
+                                if (newValue.length > 0 && errorsQuestion.options) {
+                                    setErrorsQuestion((prev) => {
+                                        const updated = { ...prev };
+                                        delete updated.options;
+                                        return updated;
+                                    });
+                                }
+                            }}
+                            renderInput={(params) => (
+                                <TextField
+                                    {...params}
+                                    variant="outlined"
+                                    label={t("survey.surveyAnswers")}
+                                    placeholder={t("survey.answersTip")}
+                                    error={Boolean(errorsQuestion.options)}
+                                />
+                            )}
+                        />
+                        <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
+                            {errorsQuestion.options || " "}
+                        </FormHelperText>
+                    </FormControl>
                 )}
 
             <Box sx={{ display: "flex", justifyContent: "end", mt: 2 }} gap={1}>
