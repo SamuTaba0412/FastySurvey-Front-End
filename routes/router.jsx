@@ -3,6 +3,8 @@ import { Routes, Route } from 'react-router-dom';
 import Index from '../src/views/Index';
 import ListSurveys from '../src/views/surveys/ListSurveys';
 import StructurationSurveys from '../src/views/surveys/StructurationSurveys';
+import ListUsers from '../src/views/users/ListUsers';
+import ListRoles from '../src/views/roles/ListRoles';
 
 
 const Router = () => {
