@@ -168,7 +168,6 @@ const ListRoles = () => {
                                     }}
                                 />
                             )}
-                            )}
                         />
                     </Box>
                 </CardContent>
