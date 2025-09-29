@@ -1,21 +1,24 @@
 {
   "navigation": {
     "index": "Inicio",
-    "surveys": "Administrar Encuestas",
+    "surveys": "Creación De Encuestas",
     "categories": "Administrar Categorías",
     "questions": "Administrar Preguntas",
     "answers": "Administrar Respuestas",
-    "surveyAssignment": "Asignación De Encuestas",
+    "surveyAssignment": "Administrar Encuestas",
     "users": "Administrar Usuarios",
     "roles": "Administrar Roles",
     "profile": "Perfil",
+    "next": "Siguiente",
+    "previous": "Atrás",
     "theme": "Tema",
     "white": "Claro",
     "dark": "Oscuro",
     "language": "Lenguaje",
     "logout": "Cerrar Sesión",
     "search": "Buscar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "yes": "Si"
   },
 
   "welcome": {
@@ -24,10 +27,31 @@
   },
 
   "survey": {
+    "saveReminder": "Recuerde que, después de realizar cualquier modificación en la encuesta, debe hacer clic en el botón \"Guardar cambios\", de lo contrario, las modificaciones no se conservarán. Además, las preguntas de tipo \"Header\" no se consideran preguntas válidas al momento de guardar.",
+    "structurationReminder": "Para poder asignar encuestas después de su creación o edición, es necesario estructurarlas previamente. Asegúrese de agregar al menos una sección desde la opción \"Estructurar Encuestas\" (ícono de engranaje).",
+    "answersTip": "Escriba y pulse ENTER para ingresar la respuesta",
+    "addSurvey": "Agregar Encuesta",
+    "addSection": "Agregar Sección",
+    "deleteSection": "Eliminar Sección",
+    "confirmDeleteSection": "Esta sección tiene preguntas asignadas, esta seguro que la desea eliminar?",
+    "editSurvey": "Editar Encuesta",
+    "addTerms": "Agregar términos y condiciones?",
+    "introductionText": "Texto Introductorio",
     "surveyResolve": "Encuestas por Resolver:",
     "selectOption": "Seleccionar una Opción",
     "selectGroup": "Seleccionar Grupo",
     "helperSelectGroup": "Seleccione un grupo para filtrar",
+    "questionType": "Tipo de Pregunta",
+    "questionDescription": "Descripción de la Pregunta",
+    "pageInfo": "Pág. {{current}} de {{total}}",
+    "saveChanges": "Guardar Cambios",
+    "surveyAnswers": "Respuestas",
+    "surveyType": "Tipo De Encuesta",
+    "surveyCreated": "Encuesta creada con éxito!",
+    "surveyEdited": "Encuesta editada con éxito!",
+    "surveyDeleted": "Encuesta eliminada con éxito!",
+    "structuration": "Estructurar",
+    "termsConditions": "Términos y Condiciones",
     "deathline": "Fecha Limite"
   },
 
@@ -44,6 +68,8 @@
     "creationDate": "Fecha de Creación",
     "updatedBy": "Actualizado Por",
     "updateDate": "Fecha de Actualización",
+    "configuratedBy": "Configurado Por",
+    "configurationDate": "Fecha de Configuración",
     "add": "Agregar",
     "addUser": "Agregar Usuario",
     "edit": "Editar",
@@ -72,23 +98,34 @@
   },
 
   "actions": {
+    "delete": "Eliminar",
+    "moveUp": "Mover Arriba",
+    "moveDown": "Mover Abajo",
     "save": "Guardar",
     "confirm": "Confirmar",
     "cancel": "Cancelar",
     "info": "Ver más",
     "infoShow": "Información Adicional",
-    "fillOut": "Diligenciar"
+    "fillOut": "Diligenciar",
+    "rename": "Renombrar",
+    "saveChanged": "Los cambios han sido guardados"
   },
 
   "pagination": {
     "rowsPerPage": "Filas por página:",
     "paginationRange": "{{from}}–{{to}} de {{count}}",
-    "noRecordsFound": "No se encontraron registros."
+    "noRecordsFound": "No se encontraron registros.",
+    "showMore": "Mostrar más",
+    "showLess": "Mostrar menos"
   },
 
   "validations": {
+    "existingSection": "Ya existe una sección del mismo nombre en esta encuesta",
+    "needOneSection": "Tiene que haber almenos una sección",
     "requiredField": "Este campo es requerido",
+    "notEmptySections": "No puede guardar una encuesta con secciones vacias",
     "notValidDocument": "Documento no valido",
-    "notValidEmail": "Correo Electrónico no valido"
+    "notValidEmail": "Correo Electrónico no valido",
+    "duplicatedQuestion": "No puede haber mas de una pregunta igual en la misma sección"
   }
 }

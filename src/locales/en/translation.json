@@ -1,21 +1,24 @@
 {
   "navigation": {
     "index": "Main Page",
-    "surveys": "Manage Surveys",
+    "surveys": "Survey Creation",
     "categories": "Manage Categories",
     "questions": "Manage Questions",
     "answers": "Manage Answers",
-    "surveyAssignment": "Survey Assignment",
+    "surveyAssignment": "Manage Surveys",
     "users": "Manage Users",
     "roles": "Manage Roles",
     "profile": "Profile",
+    "next": "Next",
+    "previous": "Previous",
     "theme": "Theme",
     "white": "White",
     "dark": "Dark",
     "language": "Language",
     "logout": "Log Out",
     "search": "Search",
-    "close": "Close"
+    "close": "Close",
+    "yes": "Yes"
   },
 
   "welcome": {
@@ -24,11 +27,33 @@
   },
 
   "survey": {
+    "saveReminder": "Remember that after making any modification to the survey, you must click the \"Save changes\" button, otherwise, the modifications will not be preserved. Additionally, questions of type \"Header\" are not considered valid questions when saving.",
+    "structurationReminder": "In order to assign surveys after creating and editing them, they need to be structured first. Make sure to add at least one section using the \"Structure Survey\" option (gear icon).",
+    "answersTip": "Write it and press ENTER to enter your answer",
+    "addSurvey": "Add Survey",
+    "addSection": "Add Section",
+    "deleteSection": "Delete Section",
+    "confirmDeleteSection": "This section has assigned questions. Are you sure you want to delete it?",
+    "editSurvey": "Edit Survey",
+    "addTerms": "Add terms and conditions?",
+    "introductionText": "Introductory Text",
     "surveyResolve": "Surveys to Resolve:",
     "selectOption": "Select an Option",
     "selectGroup": "Select Group",
     "helperSelectGroup": "Select a group to filter",
-    "deathline": "Deathline"
+    "questionType": "Question Type",
+    "questionDescription": "Question Description",
+    "pageInfo": "Page {{current}} of {{total}}",
+    "saveChanges": "Save Changes",
+    "surveyAnswers": "Answers",
+    "surveyType": "Survey Type",
+    "surveyCreated": "Survey created succesfully!",
+    "surveyEdited": "Survey edited succesfully!",
+    "surveyDeleted": "Survey deleted succesfully!",
+    "structuration": "Structurate",
+    "termsConditions": "Terms and Conditions",
+    "deathline": "Deathline",
+    "duplicatedQuestion": "There cannot be more than one question in the same section"
   },
 
   "user": {
@@ -44,6 +69,8 @@
     "creationDate": "Creation Date",
     "updatedBy": "Updated By",
     "updateDate": "Update Date",
+    "configuratedBy": "Configured By",
+    "configurationDate": "Configuration Date",
     "add": "Add",
     "addUser": "Add User",
     "edit": "Edit",
@@ -72,22 +99,32 @@
   },
 
   "actions": {
+    "delete": "Delete",
+    "moveUp": "Move Up",
+    "moveDown": "Move Down",
     "save": "Save",
     "confirm": "Confirm",
     "cancel": "Cancel",
     "info": "View more",
     "infoShow": "Additional Information",
-    "fillOut": "Fill Out"
+    "fillOut": "Fill Out",
+    "rename": "Rename",
+    "saveChanged": "The changes were saved"
   },
 
   "pagination": {
     "rowsPerPage": "Rows per change:",
     "paginationRange": "{{from}}–{{to}} of {{count}}",
-    "noRecordsFound": "No records were founded."
+    "noRecordsFound": "No records were founded.",
+    "showMore": "Show more",
+    "showLess": "Show less"
   },
 
   "validations": {
+    "existingSection": "A section with the same name already exists in this survey",
+    "needOneSection": "There must be at least one section",
     "requiredField": "This field is required",
+    "notEmptySections": "You cannot save the survey if it has empty sections",
     "notValidDocument": "Invalid document",
     "notValidEmail": "Invalid email"
   }
