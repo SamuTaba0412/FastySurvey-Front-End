@@ -18,7 +18,8 @@
     "logout": "Log Out",
     "search": "Search",
     "close": "Close",
-    "yes": "Yes"
+    "yes": "Yes",
+    "loading": "Loading"
   },
 
   "welcome": {
