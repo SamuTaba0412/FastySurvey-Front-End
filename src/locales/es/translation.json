@@ -15,7 +15,9 @@
     "language": "Lenguaje",
     "logout": "Cerrar Sesión",
     "search": "Buscar",
-    "close": "Cerrar"
+    "close": "Cerrar",
+    "yes": "Si",
+    "loading": "Cargando"
   },
 
   "welcome": {

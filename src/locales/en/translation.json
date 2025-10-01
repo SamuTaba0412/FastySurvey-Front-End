@@ -15,7 +15,9 @@
     "language": "Language",
     "logout": "Log Out",
     "search": "Search",
-    "close": "Close"
+    "close": "Close",
+    "yes": "Yes",
+    "loading": "Loading"
   },
 
   "welcome": {
