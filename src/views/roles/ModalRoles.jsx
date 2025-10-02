@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoader } from '../../context/LoaderContext';
-import { postData } from '../../utils/api/fetchMetods';
+import { getData, postData, putData } from '../../utils/api/fetchMetods';
 import { toast } from 'react-toastify';
 
 import {
@@ -65,7 +65,6 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
         startLoading();
 
         try {
-            console.log(infoRole);
             const { status, dataResponse } = await postData(
                 `${RUTA_API}/roles`,
                 {
@@ -110,8 +109,49 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
     const editRole = async () => {
         const res = validate(infoRole);
         if (!res.ok) return;
-        toast.success(t('role.roleEdited'));
-        onClose();
+
+        try {
+            const { status, dataResponse } = await putData(
+                `${RUTA_API}/roles/${idRole}`,
+                {
+                    role_name: infoRole.name,
+                    creation_date: infoRole.creationDate,
+                    role_state: infoRole.state,
+                    update_date: new Date().toISOString().split("T")[0],
+                    permissions: infoRole.permissions.map(p => Number(p))
+                }
+            );
+
+            if (status >= 200 && status < 300) {
+                const mappedRole = {
+                    idRole: dataResponse.id_role,
+                    name: dataResponse.role_name,
+                    state: dataResponse.role_state,
+                    permissions: dataResponse.permissions.map(p => ({
+                        idPermission: p.id_permission,
+                        namePermission: p.permission_name,
+                    })),
+                };
+
+                setRoleList(prev =>
+                    prev.map(role =>
+                        role.idRole === mappedRole.idRole ? mappedRole : role
+                    )
+                );
+
+                toast.success(t('role.roleEdited'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     const handleRoleChange = (e) => {
@@ -138,11 +178,36 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
             setInfoRole(initialRoleState);
             setErrors({});
         } else {
-            setInfoRole({
-                name: "Administrator",
-                permissions: ["1", "2"]
-            });
-            setErrors({});
+            startLoading();
+
+            const loadData = async () => {
+                try {
+                    const { status, dataResponse } = await getData(`${RUTA_API}/roles/${idRole}`);
+
+                    if (status >= 200 && status < 300) {
+                        const mappedRole = {
+                            name: dataResponse.role_name,
+                            permissions: dataResponse.permissions.map(p => String(p.id_permission)),
+                            creationDate: dataResponse.creation_date,
+                            updatedDate: dataResponse.update_date,
+                            state: dataResponse.role_state
+                        };
+
+                        console.log(mappedRole);
+
+                        setInfoRole(mappedRole);
+                        setErrors({});
+                    }
+                }
+                catch (err) {
+                    toast.error(t('navigation.resourcesNotFound'));
+                }
+                finally {
+                    stopLoading();
+                }
+            }
+
+            loadData();
         }
     }, [open, idRole]);
 

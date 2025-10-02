@@ -35,7 +35,7 @@ const InfoRoles = ({ idRole, open, onClose }) => {
     const [loadingRoles, setLoadingRoles] = useState(false);
 
     useEffect(() => {
-        if (idRole === 0) return;
+        if (!open) return;
 
         startLoading();
         setLoadingRoles(true);
@@ -71,7 +71,7 @@ const InfoRoles = ({ idRole, open, onClose }) => {
         }
 
         loadData();
-    }, [idRole]);
+    }, [open, idRole]);
 
     const renderText = (text) => loadingRoles ? <Skeleton width="80%" /> : text;
 
