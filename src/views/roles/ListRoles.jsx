@@ -31,11 +31,12 @@ const RUTA_API = import.meta.env.VITE_API_URL;
 
 const ListRoles = () => {
     const { t } = useTranslation();
-    const { loading, setLoading } = useLoader();
+    const { startLoading, stopLoading } = useLoader();
 
     const [openRoleModal, setOpenRoleModal] = useState(false);
     const [openDeleteRoleModal, setOpenDeleteRoleModal] = useState(false);
     const [openInfoRoleModal, setOpenInfoRoleModal] = useState(false);
+    const [loadingRoles, setLoadingRoles] = useState(false);
 
     const [idRole, setIdRole] = useState(0);
     const [searchTerm, setSearchTerm] = useState("");
@@ -81,7 +82,8 @@ const ListRoles = () => {
     }, [searchTerm, roleList]);
 
     useEffect(() => {
-        setLoading(true);
+        startLoading();
+        setLoadingRoles(true);
 
         const loadData = async () => {
             try {
@@ -105,7 +107,8 @@ const ListRoles = () => {
                 toast.error(t('navigation.resourcesNotFound'));
             }
             finally {
-                setLoading(false);
+                stopLoading();
+                setLoadingRoles(false);
             }
         }
 
@@ -116,7 +119,7 @@ const ListRoles = () => {
         <>
             <Card variant="elevation">
                 <CardContent>
-                    {!loading ? (
+                    {!loadingRoles ? (
                         <Typography variant="h4" gutterBottom>
                             {t('navigation.roles')}
                         </Typography>
@@ -125,7 +128,7 @@ const ListRoles = () => {
                     )}
 
                     <Box sx={{ mt: 1 }}>
-                        {!loading ? (
+                        {!loadingRoles ? (
                             <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, mb: 2 }}>
                                 <TextField
                                     size="small"
@@ -164,7 +167,7 @@ const ListRoles = () => {
                             </Box>
                         )}
 
-                        {!loading ? (
+                        {!loadingRoles ? (
                             <PageTable
                                 headCells={roleHeaders}
                                 rows={filteredRoles}

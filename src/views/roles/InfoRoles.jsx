@@ -29,20 +29,19 @@ const RUTA_API = import.meta.env.VITE_API_URL;
 
 const InfoRoles = ({ idRole, open, onClose }) => {
     const { t } = useTranslation();
-    const { loading, setLoading } = useLoader();
+    const { startLoading, stopLoading } = useLoader();
 
     const [infoRole, setInfoRole] = useState({});
+    const [loadingRoles, setLoadingRoles] = useState(false);
 
     useEffect(() => {
         if (idRole === 0) return;
 
-        setLoading(true);
+        startLoading();
+        setLoadingRoles(true);
 
         const loadData = async () => {
             try {
-                const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
-                await sleep(2000); // Espera simulada para probar loading
-
                 const { status, dataResponse } = await getData(`${RUTA_API}/roles/${idRole}`);
                 
                 if (status >= 200 && status < 300) {
@@ -66,14 +65,15 @@ const InfoRoles = ({ idRole, open, onClose }) => {
                 toast.error(t('navigation.resourcesNotFound'));
             }
             finally {
-                setLoading(false);
+                stopLoading();
+                setLoadingRoles(false);
             }
         }
 
         loadData();
     }, [idRole]);
 
-    const renderText = (text) => loading ? <Skeleton width="80%" /> : text;
+    const renderText = (text) => loadingRoles ? <Skeleton width="80%" /> : text;
 
     return (
         <PageModal
@@ -127,7 +127,7 @@ const InfoRoles = ({ idRole, open, onClose }) => {
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
-                            {loading ? <Skeleton variant="circular" width={40} height={40} /> :
+                            {loadingRoles ? <Skeleton variant="circular" width={40} height={40} /> :
                                 (infoRole.state === 1 ? <ToggleOn /> : <ToggleOff />)
                             }
                         </Avatar>

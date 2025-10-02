@@ -22,7 +22,7 @@ const RUTA_API = import.meta.env.VITE_API_URL;
 
 const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
     const { t } = useTranslation();
-    const { setLoading } = useLoader();
+    const { startLoading, stopLoading } = useLoader();
     const roleSchema = createRoleSchema(t);
 
     const initialRoleState = {
@@ -62,7 +62,7 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
         const res = validate(infoRole);
         if (!res.ok) return;
 
-        setLoading(true);
+        startLoading();
 
         try {
             console.log(infoRole);
@@ -75,8 +75,6 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
                     permissions: infoRole.permissions.map(p => Number(p))
                 }
             );
-
-            console.log()
 
             if (status >= 200 && status < 300) {
                 const mappedRole = {
@@ -97,12 +95,15 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
                 toast.success(t('role.roleCreated'));
                 onClose();
             }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
         }
         catch (err) {
             toast.error(t('navigation.sendError'));
         }
         finally {
-            setLoading(false);
+            stopLoading();
         }
     };
 
