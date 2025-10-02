@@ -17,7 +17,9 @@
     "search": "Search",
     "close": "Close",
     "yes": "Yes",
-    "loading": "Loading"
+    "loading": "Loading",
+    "resourcesNotFound": "The resources were not found",
+    "sendError": "An error occurred while sending the data"
   },
 
   "welcome": {

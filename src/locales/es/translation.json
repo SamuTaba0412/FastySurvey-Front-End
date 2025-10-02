@@ -17,7 +17,9 @@
     "search": "Buscar",
     "close": "Cerrar",
     "yes": "Si",
-    "loading": "Cargando"
+    "loading": "Cargando",
+    "resourcesNotFound": "Los recursos no fueron encontrados",
+    "sendError": "Hubo un error durante el envio de datos"
   },
 
   "welcome": {

@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { postData } from '../../utils/api/fetchMetods';
 import { toast } from 'react-toastify';
 
 import {
@@ -16,14 +18,25 @@ import {
 import PageModal from '../../components/PageModal';
 import createRoleSchema from '../../js/validations/roleSchema';
 
-const ModalRoles = ({ idRole = 0, open, onClose }) => {
+const RUTA_API = import.meta.env.VITE_API_URL;
+
+const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
     const { t } = useTranslation();
+    const { setLoading } = useLoader();
     const roleSchema = createRoleSchema(t);
 
     const initialRoleState = {
         name: "",
         permissions: []
     };
+
+    const permissions = [
+        { "idPermission": "1", "namePermission": t('navigation.index') },
+        { "idPermission": "2", "namePermission": t('navigation.surveys') },
+        { "idPermission": "3", "namePermission": t('navigation.surveyAssignment') },
+        { "idPermission": "4", "namePermission": t('navigation.users') },
+        { "idPermission": "5", "namePermission": t('navigation.roles') }
+    ];
 
     const [infoRole, setInfoRole] = useState(initialRoleState);
     const [errors, setErrors] = useState({});
@@ -48,8 +61,49 @@ const ModalRoles = ({ idRole = 0, open, onClose }) => {
     const addRole = async () => {
         const res = validate(infoRole);
         if (!res.ok) return;
-        toast.success(t('role.roleCreated'));
-        onClose();
+
+        setLoading(true);
+
+        try {
+            console.log(infoRole);
+            const { status, dataResponse } = await postData(
+                `${RUTA_API}/roles`,
+                {
+                    role_name: infoRole.name,
+                    creation_date: new Date().toISOString().split("T")[0],
+                    role_state: 1,
+                    permissions: infoRole.permissions.map(p => Number(p))
+                }
+            );
+
+            console.log()
+
+            if (status >= 200 && status < 300) {
+                const mappedRole = {
+                    idRole: dataResponse.id_role,
+                    name: dataResponse.role_name,
+                    state: dataResponse.role_state,
+                    permissions: dataResponse.permissions.map(p => ({
+                        idPermission: p.id_permission,
+                        namePermission: p.permission_name,
+                    })),
+                };
+
+                setRoleList([
+                    ...roleList,
+                    mappedRole
+                ]);
+
+                toast.success(t('role.roleCreated'));
+                onClose();
+            }
+        }
+        catch (err) {
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            setLoading(false);
+        }
     };
 
     const editRole = async () => {
@@ -139,8 +193,14 @@ const ModalRoles = ({ idRole = 0, open, onClose }) => {
                             input={<OutlinedInput label={t('role.selectMultiplePermissions')} />}
                             multiple
                         >
-                            <MenuItem value={"1"}>Manage Users</MenuItem>
-                            <MenuItem value={"2"}>Manage Roles</MenuItem>
+                            {permissions.map(permission => (
+                                <MenuItem
+                                    key={permission.idPermission}
+                                    value={permission.idPermission}
+                                >
+                                    {permission.namePermission}
+                                </MenuItem>
+                            ))}
                         </Select>
                         <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
                             {errors.permissions || " "}

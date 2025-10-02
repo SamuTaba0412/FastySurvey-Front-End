@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { getData } from '../../utils/api/fetchMetods';
+import { toast } from 'react-toastify';
 
 import {
     List,
@@ -7,6 +10,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
+    Skeleton,
 } from '@mui/material';
 
 import {
@@ -21,135 +25,144 @@ import {
 
 import PageModal from '../../components/PageModal';
 
-const InfoRoles = ({ idRole = 0, open, onClose }) => {
-    const { t } = useTranslation();
+const RUTA_API = import.meta.env.VITE_API_URL;
 
-    const [infoRole, setInfoRole] = useState({
-        name: "Administrator",
-        permissions: ["Manage Users", "Manage Roles"],
-        createdBy: "Samuel Tabares Patiño",
-        creationDate: new Date(),
-        updatedBy: "Samuel Tabares Patiño",
-        updatedDate: new Date(),
-        state: 1
-    });
+const InfoRoles = ({ idRole, open, onClose }) => {
+    const { t } = useTranslation();
+    const { loading, setLoading } = useLoader();
+
+    const [infoRole, setInfoRole] = useState({});
+
+    useEffect(() => {
+        if (idRole === 0) return;
+
+        setLoading(true);
+
+        const loadData = async () => {
+            try {
+                const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms));
+                await sleep(2000); // Espera simulada para probar loading
+
+                const { status, dataResponse } = await getData(`${RUTA_API}/roles/${idRole}`);
+                
+                if (status >= 200 && status < 300) {
+                    const mappedRole = {
+                        name: dataResponse.role_name,
+                        permissions: dataResponse.permissions.map(p => ({
+                            idPermission: p.id_permission,
+                            namePermission: p.permission_name,
+                        })),
+                        creationDate: dataResponse.creation_date,
+                        updatedDate: dataResponse.update_date,
+                        state: dataResponse.role_state
+                    };
+
+                    console.log(mappedRole);
+
+                    setInfoRole(mappedRole);
+                }
+            }
+            catch (err) {
+                toast.error(t('navigation.resourcesNotFound'));
+            }
+            finally {
+                setLoading(false);
+            }
+        }
+
+        loadData();
+    }, [idRole]);
+
+    const renderText = (text) => loading ? <Skeleton width="80%" /> : text;
 
     return (
-        <>
-            <PageModal
-                maxWidth="sm"
-                open={open}
-                onClose={onClose}
-                title={t('actions.infoShow')}
+        <PageModal
+            maxWidth="sm"
+            open={open}
+            onClose={onClose}
+            title={t('actions.infoShow')}
+            sx={{
+                "& .MuiDialog-container": {
+                    display: "flex",
+                    alignItems: "flex-start",
+                    justifyContent: "center",
+                },
+            }}
+            cancelText={t('navigation.close')}
+            showActions
+        >
+            <List
                 sx={{
-                    "& .MuiDialog-container": {
-                        display: "flex",
-                        alignItems: "flex-start",
-                        justifyContent: "center",
-                    },
+                    width: "100%",
+                    height: "100%",
+                    borderRadius: 2,
                 }}
-                cancelText={t('navigation.close')}
-                showActions
             >
-                <List
-                    sx={{
-                        width: "100%",
-                        height: "100%",
-                        borderRadius: 2,
-                    }}
-                >
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <Badge />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('user.name') + ":"}
-                            secondary={`${infoRole.name}`}
-                        />
-                    </ListItem>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <Badge />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('user.name') + ":"}
+                        secondary={renderText(infoRole.name)}
+                    />
+                </ListItem>
 
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <Checklist />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('tables.permissions') + ":"}
-                            secondary={`${infoRole.permissions.join(", ")}`}
-                        />
-                    </ListItem>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <Checklist />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('tables.permissions') + ":"}
+                        secondary={renderText(
+                            infoRole.permissions?.map(p => p.namePermission).join(", ") || ""
+                        )}
+                    />
+                </ListItem>
 
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                {
-                                    infoRole.state === 1 ? (
-                                        <ToggleOn />
-                                    ) : (
-                                        <ToggleOff />
-                                    )
-                                }
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('tables.state') + ":"}
-                            secondary={`${infoRole.state === 1 ? 'Activo' : 'Inactivo'}`}
-                        />
-                    </ListItem>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            {loading ? <Skeleton variant="circular" width={40} height={40} /> :
+                                (infoRole.state === 1 ? <ToggleOn /> : <ToggleOff />)
+                            }
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('tables.state') + ":"}
+                        secondary={renderText(`${infoRole.state === 1 ? 'Activo' : 'Inactivo'}`)}
+                    />
+                </ListItem>
 
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <Add />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('user.createdBy') + ":"}
-                            secondary={infoRole.createdBy}
-                        />
-                    </ListItem>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <CalendarMonth />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('user.creationDate') + ":"}
+                        secondary={renderText(infoRole.creationDate)}
+                    />
+                </ListItem>
 
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <CalendarMonth />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('user.creationDate') + ":"}
-                            secondary={infoRole.creationDate.toDateString()}
-                        />
-                    </ListItem>
-
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <Edit />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('user.updatedBy') + ":"}
-                            secondary={infoRole.updatedBy}
-                        />
-                    </ListItem>
-
-                    <ListItem>
-                        <ListItemAvatar>
-                            <Avatar>
-                                <CalendarMonth />
-                            </Avatar>
-                        </ListItemAvatar>
-                        <ListItemText
-                            primary={t('user.updateDate') + ":"}
-                            secondary={infoRole.updatedDate.toDateString()}
-                        />
-                    </ListItem>
-                </List>
-            </PageModal>
-        </>
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
+                            <CalendarMonth />
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('user.updateDate') + ":"}
+                        secondary={renderText(infoRole.updatedDate || "N/A")}
+                    />
+                </ListItem>
+            </List>
+        </PageModal>
     );
 }
 
