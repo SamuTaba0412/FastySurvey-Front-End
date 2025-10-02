@@ -56,13 +56,11 @@ const InfoRoles = ({ idRole, open, onClose }) => {
                         state: dataResponse.role_state
                     };
 
-                    console.log(mappedRole);
-
                     setInfoRole(mappedRole);
                 }
             }
             catch (err) {
-                toast.error(t('navigation.resourcesNotFound'));
+                toast.error(err);
             }
             finally {
                 stopLoading();

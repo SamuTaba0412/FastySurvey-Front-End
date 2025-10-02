@@ -104,7 +104,7 @@ const ListRoles = () => {
                 }
             }
             catch (err) {
-                toast.error(t('navigation.resourcesNotFound'));
+                toast.error(err);
             }
             finally {
                 stopLoading();
@@ -218,6 +218,7 @@ const ListRoles = () => {
                 open={openDeleteRoleModal}
                 onClose={() => setOpenDeleteRoleModal(false)}
                 idRole={idRole}
+                setRoleList={setRoleList}
             />
             <InfoRoles
                 open={openInfoRoleModal}

@@ -193,14 +193,12 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
                             state: dataResponse.role_state
                         };
 
-                        console.log(mappedRole);
-
                         setInfoRole(mappedRole);
                         setErrors({});
                     }
                 }
                 catch (err) {
-                    toast.error(t('navigation.resourcesNotFound'));
+                    toast.error(err);
                 }
                 finally {
                     stopLoading();
