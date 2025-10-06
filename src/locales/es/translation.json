@@ -90,7 +90,9 @@
     "deleteRole": "Eliminar Rol?",
     "roleCreated": "Rol creado con éxito!",
     "roleEdited": "Rol editado con éxito!",
-    "roleDeleted": "Rol eliminado con éxito!"
+    "roleDeleted": "Rol eliminado con éxito!",
+    "roleActivated": "Rol activado con exito!",
+    "roleDeactivated": "Rol desactivado con exito!"
   },
 
   "tables": {

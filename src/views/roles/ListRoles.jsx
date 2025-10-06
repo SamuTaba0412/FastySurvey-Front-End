@@ -1,7 +1,7 @@
 import { useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useLoader } from '../../context/LoaderContext';
-import { getData } from '../../utils/api/fetchMetods';
+import { getData, putData } from '../../utils/api/fetchMetods';
 import { toast } from 'react-toastify';
 
 import {
@@ -12,7 +12,8 @@ import {
     InputAdornment,
     TextField,
     Typography,
-    Skeleton
+    Skeleton,
+    Switch
 } from '@mui/material';
 
 import {
@@ -78,8 +79,44 @@ const ListRoles = () => {
             .map(role => ({
                 ...role,
                 permissions: role.permissions.map(p => p.namePermission).join(', '),
+                state: (
+                    <Switch
+                        checked={role.state === 1}
+                        onChange={() => handleToggleState(role.idRole, role.state)}
+                        color="success"
+                    />
+                )
             }));
     }, [searchTerm, roleList]);
+
+    const handleToggleState = async (idRole, currentState) => {
+        startLoading();
+
+        try {
+            const { status, dataResponse } = await putData(`${RUTA_API}/roles/state/${idRole}`)
+
+            if (status >= 200 && status < 300) {
+                setRoleList(prev =>
+                    prev.map(role =>
+                        role.idRole === idRole ? { ...role, state: dataResponse } : role
+                    )
+                );
+
+                toast.success(
+                    dataResponse === 1
+                        ? t('role.roleActivated')
+                        : t('role.roleDeactivated')
+                );
+            } else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        } catch (err) {
+            toast.error(err.message);
+        }
+        finally {
+            stopLoading();
+        }
+    };
 
     useEffect(() => {
         startLoading();

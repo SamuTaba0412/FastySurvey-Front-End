@@ -21,12 +21,10 @@
     "yes": "Yes",
     "loading": "Loading"
   },
-
   "welcome": {
     "welcome": "Welcome to Fasty-Survey!",
     "welcomeFastySurvey": "Fasty-Survey is a technological solution focused on comprehensive survey management, developed with the main goal of optimizing data collection and analysis processes. This tool allows administrators to create customizable surveys, define dynamic question structures, and configure different types of responses based on the needs of the study.\nIt also facilitates the assignment of surveys to specific users, ensuring efficient and controlled distribution. Users can complete the surveys through an intuitive and responsive interface, significantly enhancing the user experience.\nOnce the data is collected, Fasty-Survey provides a results visualization system that enables users to clearly and attractively interpret the information through interactive charts and reports. This makes data analysis more accessible and valuable for strategic decision-making."
   },
-
   "survey": {
     "saveReminder": "Remember that after making any modification to the survey, you must click the \"Save changes\" button, otherwise, the modifications will not be preserved. Additionally, questions of type \"Header\" are not considered valid questions when saving.",
     "structurationReminder": "In order to assign surveys after creating and editing them, they need to be structured first. Make sure to add at least one section using the \"Structure Survey\" option (gear icon).",
@@ -56,7 +54,6 @@
     "deathline": "Deathline",
     "duplicatedQuestion": "There cannot be more than one question in the same section"
   },
-
   "user": {
     "name": "Name",
     "names": "Names",
@@ -83,7 +80,6 @@
     "userEdited": "User edited succesfully!",
     "userDeleted": "User deleted succesfully!"
   },
-
   "role": {
     "selectMultiplePermissions": "Select multiple permissions",
     "addRole": "Add Role",
@@ -91,14 +87,14 @@
     "deleteRole": "Eliminar Rol?",
     "roleCreated": "Role created succesfully!",
     "roleEdited": "Role edited succesfully!",
-    "roleDeleted": "Role deleted succesfully!"
+    "roleDeleted": "Role deleted succesfully!",
+    "roleActivated": "The role has been successfully activated.",
+    "roleDeactivated": "The role has been successfully deactivated."
   },
-
   "tables": {
     "permissions": "Permissions",
     "state": "State"
   },
-
   "actions": {
     "delete": "Delete",
     "moveUp": "Move Up",
@@ -112,7 +108,6 @@
     "rename": "Rename",
     "saveChanged": "The changes were saved"
   },
-
   "pagination": {
     "rowsPerPage": "Rows per change:",
     "paginationRange": "{{from}}–{{to}} of {{count}}",
@@ -120,7 +115,6 @@
     "showMore": "Show more",
     "showLess": "Show less"
   },
-
   "validations": {
     "existingSection": "A section with the same name already exists in this survey",
     "needOneSection": "There must be at least one section",
