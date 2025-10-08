@@ -196,7 +196,6 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
 
             const loadData = async () => {
                 try {
-                    await new Promise(resolve => setTimeout(resolve, 1500));
                     const { status, dataResponse } = await getData(`${RUTA_API}/users/${idUser}`);
 
                     if (status >= 200 && status < 300) {
