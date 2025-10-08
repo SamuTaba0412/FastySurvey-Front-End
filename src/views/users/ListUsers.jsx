@@ -140,9 +140,8 @@ const ListUsers = () => {
         setLoadingUsers(true);
 
         const loadData = async () => {
-            try {
-                // const { status, dataResponse } = await getData(`${RUTA_API}/users`);
-
+            try 
+            {
                 const [userRes, rolesRes] = await Promise.all([
                     getData(`${RUTA_API}/users`),
                     getData(`${RUTA_API}/roles`)

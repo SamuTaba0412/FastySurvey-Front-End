@@ -117,8 +117,55 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
     const editUser = async () => {
         const res = validate(infoUser);
         if (!res.ok) return;
-        toast.success(t('user.userEdited'));
-        onClose();
+
+        try {
+            const { status, dataResponse } = await putData(
+                `${RUTA_API}/users/${idUser}`,
+                {
+                    names: infoUser.names,
+                    last_names: infoUser.lastNames,
+                    identification_type: infoUser.identificationType,
+                    identification: infoUser.identification,
+                    email: infoUser.email,
+                    creation_date: infoUser.creationDate,
+                    update_date: new Date().toISOString().split("T")[0],
+                    user_state: infoUser.state,
+                    id_role: Number(infoUser.role)
+                }
+            );
+
+            if (status >= 200 && status < 300) {
+                const mappedUser = {
+                    idUser: dataResponse.id_user,
+                    fullName: `${dataResponse.names} ${dataResponse.last_names}`,
+                    identificationType: dataResponse.identification_type,
+                    identification: dataResponse.identification,
+                    state: dataResponse.user_state,
+                    role: {
+                        idRole: dataResponse.role.id_role,
+                        roleName: dataResponse.role.role_name
+                    }
+                };
+
+                setUserList(prev =>
+                    prev.map(user =>
+                        user.idUser === mappedUser.idUser ? mappedUser : user
+                    )
+                );
+
+                toast.success(t('user.userEdited'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     const handleUserChange = (e) => {
@@ -141,19 +188,43 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
     useEffect(() => {
         if (!open) return;
 
-        if (idUser == 0) {
-            setInfoUser(initialUserState);
-            setErrors({});
-        } else {
-            setInfoUser({
-                names: "Samuel",
-                lastNames: "Tabares Patiño",
-                identificationType: "1",
-                identification: "1017923676",
-                email: "samutabares09022005@gmail.com",
-                role: "1"
-            });
-            setErrors({});
+        setInfoUser(initialUserState);
+        setErrors({});
+
+        if (idUser != 0) {
+            startLoading();
+
+            const loadData = async () => {
+                try {
+                    await new Promise(resolve => setTimeout(resolve, 1500));
+                    const { status, dataResponse } = await getData(`${RUTA_API}/users/${idUser}`);
+
+                    if (status >= 200 && status < 300) {
+                        const mappedUser = {
+                            names: dataResponse.names,
+                            lastNames: dataResponse.last_names,
+                            identificationType: dataResponse.identification_type,
+                            identification: dataResponse.identification,
+                            email: dataResponse.email,
+                            creationDate: dataResponse.creation_date,
+                            updatedDate: dataResponse.update_date,
+                            state: dataResponse.user_state,
+                            role: String(dataResponse.role.id_role)
+                        };
+
+                        setInfoUser(mappedUser);
+                        setErrors({});
+                    }
+                }
+                catch (err) {
+                    toast.error(err);
+                }
+                finally {
+                    stopLoading();
+                }
+            }
+
+            loadData();
         }
     }, [open, idUser]);
 
