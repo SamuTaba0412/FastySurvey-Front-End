@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { getData } from '../../utils/api/fetchMetods';
+import { toast } from 'react-toastify';
 
 import {
     List,
@@ -7,6 +10,7 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
+    Skeleton
 } from '@mui/material';
 
 import {
@@ -21,27 +25,56 @@ import {
 
 import PageModal from '../../components/PageModal';
 
-const InfoUsers = ({ idUser = 0, open, onClose }) => {
-    const { t } = useTranslation();
+const RUTA_API = import.meta.env.VITE_API_URL;
 
-    const [infoUser, setInfoUser] = useState({
-        names: "Samuel",
-        lastNames: "Tabares Patiño",
-        identificationType: {
-            idIdentificationType: 1,
-            identificationName: "C.C."
-        },
-        identification: "1017923676",
-        email: "samutabares09022005@gmail.com",
-        createdBy: "Samuel Tabares Patiño",
-        creationDate: new Date(),
-        updatedBy: "Samuel Tabares Patiño",
-        updatedDate: new Date(),
-        role: {
-            idRole: 1,
-            roleName: "Administrador"
+const InfoUsers = ({ idUser, open, onClose }) => {
+    const { t } = useTranslation();
+    const { startLoading, stopLoading } = useLoader();
+
+    const [infoUser, setInfoUser] = useState({});
+    const [loadingUsers, setLoadingUsers] = useState(false);
+
+    useEffect(() => {
+        if (!open) return;
+
+        startLoading();
+        setLoadingUsers(true);
+
+        const loadData = async () => {
+            try {
+                const { status, dataResponse } = await getData(`${RUTA_API}/users/${idUser}`);
+
+                if (status >= 200 && status < 300) {
+                    const mappedUser = {
+                        names: dataResponse.names,
+                        lastNames: dataResponse.last_names,
+                        identificationType: dataResponse.identification_type,
+                        identification: dataResponse.identification,
+                        email: dataResponse.email,
+                        creationDate: dataResponse.creation_date,
+                        updatedDate: dataResponse.update_date,
+                        role: {
+                            idRole: dataResponse.role.id_role,
+                            roleName: dataResponse.role.role_name
+                        }
+                    };
+
+                    setInfoUser(mappedUser);
+                }
+            }
+            catch (err) {
+                toast.error(err);
+            }
+            finally {
+                stopLoading();
+                setLoadingUsers(false);
+            }
         }
-    });
+
+        loadData();
+    }, [open, idUser]);
+
+    const renderText = (text) => loadingUsers ? <Skeleton width="80%" /> : text;
 
     return (
         <PageModal
@@ -74,7 +107,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.fullName') + ":"}
-                        secondary={`${infoUser.names} ${infoUser.lastNames}`}
+                        secondary={renderText(`${infoUser.names} ${infoUser.lastNames}`)}
                     />
                 </ListItem>
 
@@ -86,7 +119,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.identification') + ":"}
-                        secondary={`${infoUser.identificationType.identificationName}: ${infoUser.identification}`}
+                        secondary={renderText(`${infoUser.identificationType}: ${infoUser.identification}`)}
                     />
                 </ListItem>
 
@@ -98,7 +131,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.email') + ":"}
-                        secondary={infoUser.email}
+                        secondary={renderText(infoUser.email)}
                     />
                 </ListItem>
 
@@ -110,11 +143,11 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.role') + ":"}
-                        secondary={infoUser.role.roleName}
+                        secondary={renderText(infoUser.role?.roleName || '')}
                     />
                 </ListItem>
 
-                <ListItem>
+                {/* <ListItem>
                     <ListItemAvatar>
                         <Avatar>
                             <Add />
@@ -124,7 +157,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                         primary={t('user.createdBy') + ":"}
                         secondary={infoUser.createdBy}
                     />
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem>
                     <ListItemAvatar>
@@ -134,11 +167,11 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.creationDate') + ":"}
-                        secondary={infoUser.creationDate.toDateString()}
+                        secondary={renderText(infoUser.creationDate)}
                     />
                 </ListItem>
 
-                <ListItem>
+                {/* <ListItem>
                     <ListItemAvatar>
                         <Avatar>
                             <Edit />
@@ -148,7 +181,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                         primary={t('user.updatedBy') + ":"}
                         secondary={infoUser.updatedBy}
                     />
-                </ListItem>
+                </ListItem> */}
 
                 <ListItem>
                     <ListItemAvatar>
@@ -158,7 +191,7 @@ const InfoUsers = ({ idUser = 0, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.updateDate') + ":"}
-                        secondary={infoUser.updatedDate.toDateString()}
+                        secondary={renderText(infoUser.updatedDate)}
                     />
                 </ListItem>
             </List>
