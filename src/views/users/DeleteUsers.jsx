@@ -1,16 +1,42 @@
 import { useTranslation } from 'react-i18next';
+import { deleteData } from '../../utils/api/fetchMetods';
+import { useLoader } from '../../context/LoaderContext';
 import { toast } from 'react-toastify';
 
 import { Typography } from '@mui/material';
 
 import PageModal from '../../components/PageModal';
 
-const DeleteUsers = ({ idUser = 0, open, onClose }) => {
+const RUTA_API = import.meta.env.VITE_API_URL;
+
+const DeleteUsers = ({ idUser, open, onClose, setUserList }) => {
     const { t } = useTranslation();
+    const { startLoading, stopLoading } = useLoader();
 
     const deleteUser = async () => {
-        toast.success(t('user.userDeleted'));
-        onClose();
+        startLoading();
+
+        try {
+            const { status, dataResponse } = await deleteData(`${RUTA_API}/users/${idUser}`);
+
+            if (status >= 200 && status < 300) {
+                setUserList(prev =>
+                    prev.filter(user => user.idUser !== dataResponse)
+                );
+
+                toast.success(t('user.userDeleted'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            toast.error(err);
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     return (

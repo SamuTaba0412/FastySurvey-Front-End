@@ -310,6 +310,7 @@ const ListUsers = () => {
                 open={openDeleteUserModal}
                 onClose={() => setOpenDeleteUserModal(false)}
                 idUser={idUser}
+                setUserList={setUserList}
             />
         </>
     );
