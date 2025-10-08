@@ -53,7 +53,14 @@
     "deleteRegister": "Are you sure to delete this register?",
     "userCreated": "User created succesfully!",
     "userEdited": "User edited succesfully!",
-    "userDeleted": "User deleted succesfully!"
+    "userDeleted": "User deleted succesfully!",
+    "userActivated": "The user has been successfully activated.",
+    "userDeactivated": "The user has been successfully deactivated."
+  },
+
+  "tables": {
+    "permissions": "Permissions",
+    "state": "State"
   },
 
   "actions": {

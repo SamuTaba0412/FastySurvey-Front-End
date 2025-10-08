@@ -9,7 +9,9 @@ import PageAppBar from './components/PageAppBar.jsx';
 import { getTheme } from './js/theme.js';
 import './js/i18next.js';
 import './css/index.css';
+import './css/loader.css'
 import { ToastContainer } from 'react-toastify';
+import { LoaderProvider } from './context/LoaderContext.jsx';
 
 const Root = () => {
   const storedMode = localStorage.getItem('colorMode') || 'light';
@@ -27,34 +29,36 @@ const Root = () => {
   };
 
   return (
-    <ThemeProvider theme={theme}>
-      <CssBaseline />
-      <ToastContainer theme={storedMode == 'light' ? 'colored' : 'dark'} />
-      <BrowserRouter>
-        <PageAppBar
-          toggleColorMode={toggleColorMode}
-          isDrawerOpen={isDrawerOpen}
-          setIsDrawerOpen={setIsDrawerOpen}
-        />
-        <Toolbar />
-        <Box
-          component="main"
-          sx={{
-            flexGrow: 1,
-            p: 3,
-            ml: isDrawerOpen && !isMobile ? '240px' : 0,
-            transition: theme.transitions.create('margin', {
-              easing: theme.transitions.easing.sharp,
-              duration: theme.transitions.duration.leavingScreen,
-            }),
-          }}
-        >
-          <Container>
-            <App />
-          </Container>
-        </Box>
-      </BrowserRouter>
-    </ThemeProvider>
+    <LoaderProvider>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+        <ToastContainer theme={storedMode == 'light' ? 'colored' : 'dark'} />
+        <BrowserRouter>
+          <PageAppBar
+            toggleColorMode={toggleColorMode}
+            isDrawerOpen={isDrawerOpen}
+            setIsDrawerOpen={setIsDrawerOpen}
+          />
+          <Toolbar />
+          <Box
+            component="main"
+            sx={{
+              flexGrow: 1,
+              p: 3,
+              ml: isDrawerOpen && !isMobile ? '240px' : 0,
+              transition: theme.transitions.create('margin', {
+                easing: theme.transitions.easing.sharp,
+                duration: theme.transitions.duration.leavingScreen,
+              }),
+            }}
+          >
+            <Container>
+              <App />
+            </Container>
+          </Box>
+        </BrowserRouter>
+      </ThemeProvider>
+    </LoaderProvider>
   );
 }
 

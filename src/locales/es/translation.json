@@ -53,7 +53,14 @@
     "deleteRegister": "Está seguro de eliminar este registro?",
     "userCreated": "Usuario creado con éxito!",
     "userEdited": "Usuario editado con éxito!",
-    "userDeleted": "Usuario eliminado con éxito!"
+    "userDeleted": "Usuario eliminado con éxito!",
+    "userActivated": "Usuario activado con éxito!",
+    "userDeactivated": "Usuario desactivado con exito!"
+  },
+
+  "tables": {
+    "permissions": "Permisos",
+    "state": "Estado"
   },
 
   "actions": {
