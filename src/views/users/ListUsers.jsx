@@ -43,6 +43,7 @@ const ListUsers = () => {
     const [searchTerm, setSearchTerm] = useState("");
 
     const [userList, setUserList] = useState([]);
+    const [rolesList, setRolesList] = useState([]);
 
     const userHeaders = useMemo(() => [
         {
@@ -140,10 +141,15 @@ const ListUsers = () => {
 
         const loadData = async () => {
             try {
-                const { status, dataResponse } = await getData(`${RUTA_API}/users`);
+                // const { status, dataResponse } = await getData(`${RUTA_API}/users`);
 
-                if (status >= 200 && status < 300) {
-                    const mappedUsers = dataResponse.map(user => ({
+                const [userRes, rolesRes] = await Promise.all([
+                    getData(`${RUTA_API}/users`),
+                    getData(`${RUTA_API}/roles`)
+                ]);
+
+                if (userRes.status >= 200 && userRes.status < 300) {
+                    const mappedUsers = userRes.dataResponse.map(user => ({
                         idUser: user.id_user,
                         fullName: `${user.names} ${user.last_names}`,
                         identificationType: user.identification_type,
@@ -153,9 +159,23 @@ const ListUsers = () => {
                             idRole: user.role.id_role,
                             roleName: user.role.role_name
                         }
-                    }))
+                    }));
 
                     setUserList(mappedUsers);
+                }
+
+                if (rolesRes.status >= 200 && rolesRes.status < 300) {
+                    const mappedRoles = rolesRes.dataResponse.map(role => ({
+                        idRole: role.id_role,
+                        name: role.role_name,
+                        state: role.role_state,
+                        permissions: role.permissions.map(p => ({
+                            idPermission: p.id_permission,
+                            namePermission: p.permission_name,
+                        }))
+                    }));
+
+                    setRolesList(mappedRoles);
                 }
             }
             catch (err) {
@@ -282,7 +302,9 @@ const ListUsers = () => {
                 open={openUserModal}
                 onClose={() => setOpenUserModal(false)}
                 idUser={idUser}
+                userList={userList}
                 setUserList={setUserList}
+                rolesList={rolesList}
             />
 
             <DeleteUsers

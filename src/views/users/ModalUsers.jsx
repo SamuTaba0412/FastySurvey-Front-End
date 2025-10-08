@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { getData, postData, putData } from '../../utils/api/fetchMetods'
 import { toast } from 'react-toastify';
 
 import {
@@ -16,9 +18,18 @@ import {
 import PageModal from '../../components/PageModal';
 import createUserSchema from '../../js/validations/userSchema';
 
-const ModalUsers = ({ idUser = 0, open, onClose }) => {
+const RUTA_API = import.meta.env.VITE_API_URL;
+
+const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList }) => {
     const { t } = useTranslation();
+    const { startLoading, stopLoading } = useLoader();
     const userSchema = createUserSchema(t);
+
+    const validDocuments = [
+        { documentKey: "CC", documentName: "Cedula de Ciudadania" },
+        { documentKey: "CE", documentName: "Cedula de Extranjeria" },
+        { documentKey: "NIT", documentName: "Nit Empresarial" }
+    ]
 
     const initialUserState = {
         names: "",
@@ -52,8 +63,55 @@ const ModalUsers = ({ idUser = 0, open, onClose }) => {
     const addUser = async () => {
         const res = validate(infoUser);
         if (!res.ok) return;
-        toast.success(t('user.userCreated'));
-        onClose();
+
+        startLoading();
+
+        try {
+            const { status, dataResponse } = await postData(
+                `${RUTA_API}/users`,
+                {
+                    names: infoUser.names,
+                    last_names: infoUser.lastNames,
+                    identification_type: infoUser.identificationType,
+                    identification: infoUser.identification,
+                    email: infoUser.email,
+                    creation_date: new Date().toISOString().split("T")[0],
+                    user_state: 1,
+                    id_role: Number(infoUser.role)
+                }
+            );
+
+            if (status >= 200 && status < 300) {
+                const mappedUser = {
+                    idUser: dataResponse.id_user,
+                    fullName: `${dataResponse.names} ${dataResponse.last_names}`,
+                    identificationType: dataResponse.identification_type,
+                    identification: dataResponse.identification,
+                    state: dataResponse.user_state,
+                    role: {
+                        idRole: dataResponse.role.id_role,
+                        roleName: dataResponse.role.role_name
+                    }
+                };
+
+                setUserList([
+                    ...userList,
+                    mappedUser
+                ]);
+
+                toast.success(t('user.userCreated'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     const editUser = async () => {
@@ -165,8 +223,9 @@ const ModalUsers = ({ idUser = 0, open, onClose }) => {
                             input={<OutlinedInput label={t('user.identificationType')} />}
                             onChange={handleUserChange}
                         >
-                            <MenuItem value={"1"}>{t('C.C.')}</MenuItem>
-                            <MenuItem value={"2"}>{t('C.E.')}</MenuItem>
+                            {validDocuments.map(document => (
+                                <MenuItem key={document.documentKey} value={document.documentKey}>{document.documentName}</MenuItem>
+                            ))}
                         </Select>
                         <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
                             {errors.identificationType || " "}
@@ -222,7 +281,9 @@ const ModalUsers = ({ idUser = 0, open, onClose }) => {
                             input={<OutlinedInput label={t('user.role')} />}
                             onChange={handleUserChange}
                         >
-                            <MenuItem value={"1"}>Administrador</MenuItem>
+                            {rolesList.map(role => (
+                                <MenuItem key={String(role.idRole)} value={String(role.idRole)}>{role.name}</MenuItem>
+                            ))}
                         </Select>
                         <FormHelperText sx={{ minHeight: "1.5em", m: 0 }}>
                             {errors.role || " "}
