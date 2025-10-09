@@ -1,4 +1,5 @@
 const API_KEY = import.meta.env.VITE_API_KEY
+const RUTA_API = import.meta.env.VITE_API_URL;
 
 /**
  * Metodo para obtener datos por una petición HTTP [GET]
@@ -6,7 +7,7 @@ const API_KEY = import.meta.env.VITE_API_KEY
  * @return { object }
 */
 export const getData = async (url) => {
-	const response = await fetch(url, {
+	const response = await fetch(`${RUTA_API + url}`, {
 		method: 'GET',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -30,7 +31,7 @@ export const getData = async (url) => {
  * @return { object }
  */
 export const postData = async (url, data) => {
-	const response = await fetch(url, {
+	const response = await fetch(`${RUTA_API + url}`, {
 		method: 'POST',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -56,7 +57,7 @@ export const postData = async (url, data) => {
  * @return { object }
  */
 export const putData = async (url, data) => {
-	const response = await fetch(url, {
+	const response = await fetch(`${RUTA_API + url}`, {
 		method: 'PUT',
 		mode: 'cors',
 		cache: 'no-cache',
@@ -79,7 +80,7 @@ export const putData = async (url, data) => {
  * @return { object }
 */
 export const deleteData = async (url) => {
-	const response = await fetch(url, {
+	const response = await fetch(`${RUTA_API + url}`, {
 		method: 'DELETE',
 		mode: 'cors',
 		cache: 'no-cache',

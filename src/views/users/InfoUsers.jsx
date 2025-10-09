@@ -20,12 +20,12 @@ import {
     Email,
     Person,
     RecentActors,
-    Security
+    Security,
+    ToggleOn,
+    ToggleOff
 } from '@mui/icons-material'
 
 import PageModal from '../../components/PageModal';
-
-const RUTA_API = import.meta.env.VITE_API_URL;
 
 const InfoUsers = ({ idUser, open, onClose }) => {
     const { t } = useTranslation();
@@ -42,7 +42,7 @@ const InfoUsers = ({ idUser, open, onClose }) => {
 
         const loadData = async () => {
             try {
-                const { status, dataResponse } = await getData(`${RUTA_API}/users/${idUser}`);
+                const { status, dataResponse } = await getData(`/users/${idUser}`);
 
                 if (status >= 200 && status < 300) {
                     const mappedUser = {
@@ -53,6 +53,7 @@ const InfoUsers = ({ idUser, open, onClose }) => {
                         email: dataResponse.email,
                         creationDate: dataResponse.creation_date,
                         updatedDate: dataResponse.update_date,
+                        state: dataResponse.user_state,
                         role: {
                             idRole: dataResponse.role.id_role,
                             roleName: dataResponse.role.role_name
@@ -162,6 +163,20 @@ const InfoUsers = ({ idUser, open, onClose }) => {
                 <ListItem>
                     <ListItemAvatar>
                         <Avatar>
+                            {loadingUsers ? <Skeleton variant="circular" width={40} height={40} /> :
+                                (infoUser.state === 1 ? <ToggleOn /> : <ToggleOff />)
+                            }
+                        </Avatar>
+                    </ListItemAvatar>
+                    <ListItemText
+                        primary={t('tables.state') + ":"}
+                        secondary={renderText(`${infoUser.state === 1 ? 'Activo' : 'Inactivo'}`)}
+                    />
+                </ListItem>
+
+                <ListItem>
+                    <ListItemAvatar>
+                        <Avatar>
                             <CalendarMonth />
                         </Avatar>
                     </ListItemAvatar>
@@ -191,7 +206,7 @@ const InfoUsers = ({ idUser, open, onClose }) => {
                     </ListItemAvatar>
                     <ListItemText
                         primary={t('user.updateDate') + ":"}
-                        secondary={renderText(infoUser.updatedDate)}
+                        secondary={renderText(infoUser.updatedDate || "N/A")}
                     />
                 </ListItem>
             </List>

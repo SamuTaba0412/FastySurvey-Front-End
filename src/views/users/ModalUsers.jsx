@@ -18,8 +18,6 @@ import {
 import PageModal from '../../components/PageModal';
 import createUserSchema from '../../js/validations/userSchema';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList }) => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -68,7 +66,7 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
 
         try {
             const { status, dataResponse } = await postData(
-                `${RUTA_API}/users`,
+                `/users`,
                 {
                     names: infoUser.names,
                     last_names: infoUser.lastNames,
@@ -120,7 +118,7 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
 
         try {
             const { status, dataResponse } = await putData(
-                `${RUTA_API}/users/${idUser}`,
+                `/users/${idUser}`,
                 {
                     names: infoUser.names,
                     last_names: infoUser.lastNames,
@@ -196,7 +194,7 @@ const ModalUsers = ({ idUser, open, onClose, userList, setUserList, rolesList })
 
             const loadData = async () => {
                 try {
-                    const { status, dataResponse } = await getData(`${RUTA_API}/users/${idUser}`);
+                    const { status, dataResponse } = await getData(`/users/${idUser}`);
 
                     if (status >= 200 && status < 300) {
                         const mappedUser = {

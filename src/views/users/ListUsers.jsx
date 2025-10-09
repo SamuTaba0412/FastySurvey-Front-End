@@ -28,8 +28,6 @@ import ModalUsers from './ModalUsers';
 import DeleteUsers from './DeleteUsers';
 import InfoUsers from './InfoUsers';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const ListUsers = () => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -110,7 +108,7 @@ const ListUsers = () => {
         startLoading();
 
         try {
-            const { status, dataResponse } = await putData(`${RUTA_API}/users/state/${idUser}`)
+            const { status, dataResponse } = await putData(`/users/state/${idUser}`)
 
             if (status >= 200 && status < 300) {
                 setUserList(prev =>
@@ -143,8 +141,8 @@ const ListUsers = () => {
             try 
             {
                 const [userRes, rolesRes] = await Promise.all([
-                    getData(`${RUTA_API}/users`),
-                    getData(`${RUTA_API}/roles`)
+                    getData(`/users`),
+                    getData(`/roles`)
                 ]);
 
                 if (userRes.status >= 200 && userRes.status < 300) {
