@@ -18,8 +18,6 @@ import {
 import PageModal from '../../components/PageModal';
 import createRoleSchema from '../../js/validations/roleSchema';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -66,7 +64,7 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
 
         try {
             const { status, dataResponse } = await postData(
-                `${RUTA_API}/roles`,
+                `/roles`,
                 {
                     role_name: infoRole.name,
                     creation_date: new Date().toISOString().split("T")[0],
@@ -112,7 +110,7 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
 
         try {
             const { status, dataResponse } = await putData(
-                `${RUTA_API}/roles/${idRole}`,
+                `/roles/${idRole}`,
                 {
                     role_name: infoRole.name,
                     creation_date: infoRole.creationDate,
@@ -174,15 +172,15 @@ const ModalRoles = ({ idRole = 0, open, onClose, roleList, setRoleList }) => {
     useEffect(() => {
         if (!open) return;
 
-        if (idRole == 0) {
-            setInfoRole(initialRoleState);
-            setErrors({});
-        } else {
+        setInfoRole(initialRoleState);
+        setErrors({});
+
+        if (idRole != 0) {
             startLoading();
 
             const loadData = async () => {
                 try {
-                    const { status, dataResponse } = await getData(`${RUTA_API}/roles/${idRole}`);
+                    const { status, dataResponse } = await getData(`/roles/${idRole}`);
 
                     if (status >= 200 && status < 300) {
                         const mappedRole = {

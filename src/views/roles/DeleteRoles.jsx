@@ -7,8 +7,6 @@ import { Typography } from '@mui/material';
 
 import PageModal from '../../components/PageModal';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const DeleteRoles = ({ idRole = 0, open, onClose, setRoleList }) => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -17,8 +15,7 @@ const DeleteRoles = ({ idRole = 0, open, onClose, setRoleList }) => {
         startLoading();
 
         try {
-            console.log(idRole);
-            const { status, dataResponse } = await deleteData(`${RUTA_API}/roles/${idRole}`);
+            const { status, dataResponse } = await deleteData(`/roles/${idRole}`);
 
             if (status >= 200 && status < 300) {
                 setRoleList(prev =>

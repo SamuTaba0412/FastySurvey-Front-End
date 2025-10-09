@@ -28,8 +28,6 @@ import ModalRoles from './ModalRoles';
 import DeleteRoles from './DeleteRoles';
 import InfoRoles from './InfoRoles';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const ListRoles = () => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -93,7 +91,7 @@ const ListRoles = () => {
         startLoading();
 
         try {
-            const { status, dataResponse } = await putData(`${RUTA_API}/roles/state/${idRole}`)
+            const { status, dataResponse } = await putData(`/roles/state/${idRole}`)
 
             if (status >= 200 && status < 300) {
                 setRoleList(prev =>
@@ -124,7 +122,7 @@ const ListRoles = () => {
 
         const loadData = async () => {
             try {
-                const { status, dataResponse } = await getData(`${RUTA_API}/roles`);
+                const { status, dataResponse } = await getData(`/roles`);
 
                 if (status >= 200 && status < 300) {
                     const mappedRoles = dataResponse.map(role => ({

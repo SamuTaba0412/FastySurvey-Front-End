@@ -25,8 +25,6 @@ import {
 
 import PageModal from '../../components/PageModal';
 
-const RUTA_API = import.meta.env.VITE_API_URL;
-
 const InfoRoles = ({ idRole, open, onClose }) => {
     const { t } = useTranslation();
     const { startLoading, stopLoading } = useLoader();
@@ -42,7 +40,7 @@ const InfoRoles = ({ idRole, open, onClose }) => {
 
         const loadData = async () => {
             try {
-                const { status, dataResponse } = await getData(`${RUTA_API}/roles/${idRole}`);
+                const { status, dataResponse } = await getData(`/roles/${idRole}`);
                 
                 if (status >= 200 && status < 300) {
                     const mappedRole = {
