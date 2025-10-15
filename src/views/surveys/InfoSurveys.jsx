@@ -73,7 +73,7 @@ const InfoSurveys = ({ idSurvey, open, onClose }) => {
                         surveyName: dataResponse.survey_name,
                         creationDate: dataResponse.creation_date,
                         configurationDate: dataResponse.configuration_date,
-                        introductionText: dataResponse.introduction_text,
+                        introductionText: dataResponse.introductory_text,
                         termsConditions: dataResponse.terms_conditions
                     };
 

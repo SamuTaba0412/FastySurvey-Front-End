@@ -107,8 +107,50 @@ const ModalSurveys = ({ idSurvey, open, onClose, surveyList, setSurveyList }) =>
     const editSurvey = async () => {
         const res = validate(infoSurvey);
         if (!res.ok) return;
-        toast.success(t('survey.surveyEdited'));
-        onClose();
+
+        console.log(infoSurvey);
+
+        try {
+            const { status, dataResponse } = await putData(
+                `/surveys/${idSurvey}`,
+                {
+                    survey_name: infoSurvey.surveyName,
+                    creation_date: infoSurvey.creationDate,
+                    configuration_date: new Date().toISOString().split("T")[0],
+                    survey_state: infoSurvey.state,
+                    introductory_text: infoSurvey.introductionText || null,
+                    terms_conditions: infoSurvey.termsConditions || null,
+                }
+            );
+
+            if (status >= 200 && status < 300) {
+                const mappedSurvey = {
+                    idSurvey: dataResponse.id_survey,
+                    name: dataResponse.survey_name,
+                    state: dataResponse.survey_state,
+                    creationDate: dataResponse.creation_date,
+                    configurationDate: dataResponse.configuration_date
+                };
+
+                setSurveyList(prev =>
+                    prev.map(survey =>
+                        survey.idSurvey === mappedSurvey.idSurvey ? mappedSurvey : survey
+                    )
+                );
+
+                toast.success(t('survey.surveyEdited'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     const handleSurveyChange = (e) => {
@@ -133,17 +175,40 @@ const ModalSurveys = ({ idSurvey, open, onClose, surveyList, setSurveyList }) =>
 
         if (!open) return;
 
-        if (idSurvey == 0) {
-            setInfoSurvey(initialSurveyState);
-            setErrors({});
-        } else {
-            setInfoSurvey({
-                surveyName: "Encuesta Calidad #1",
-                introductionText: "Con el objetivo de garantizar la excelencia en nuestros procesos y servicios, hemos diseñado la Encuesta Calidad #1. Su participación es fundamental para identificar oportunidades de mejora y mantener los más altos estándares de calidad. Agradecemos de antemano el tiempo dedicado a responder de manera objetiva y responsable. Sus aportes serán tratados con total confidencialidad y contribuirán directamente al fortalecimiento de nuestra gestión.",
-                addTerms: "yes",
-                termsConditions: "Al participar en la Encuesta Calidad #1, usted acepta que sus respuestas serán utilizadas únicamente con fines de análisis interno y mejora de nuestros procesos y servicios. La información recolectada será tratada de manera confidencial y no será compartida con terceros ajenos a la organización. La participación es completamente voluntaria y usted podrá abstenerse de responder cualquier pregunta si así lo considera pertinente. Al continuar con la encuesta, confirma que ha leído y aceptado los presentes términos y condiciones."
-            });
-            setErrors({});
+        setInfoSurvey(initialSurveyState);
+        setErrors({});
+
+        if (idSurvey != 0) {
+            startLoading();
+
+            const loadData = async () => {
+                try {
+                    const { status, dataResponse } = await getData(`/surveys/${idSurvey}`);
+
+                    if (status >= 200 && status < 300) {
+                        const mappedSurvey = {
+                            surveyName: dataResponse.survey_name,
+                            creationDate: dataResponse.creation_date,
+                            configurationDate: dataResponse.configuration_date,
+                            introductionText: dataResponse.introductory_text || '',
+                            termsConditions: dataResponse.terms_conditions || '',
+                            state: dataResponse.survey_state,
+                            addTerms: dataResponse.terms_conditions ? 'yes' : 'no'
+                        };
+
+                        setInfoSurvey(mappedSurvey);
+                        setErrors({});
+                    }
+                }
+                catch (err) {
+                    toast.error(err);
+                }
+                finally {
+                    stopLoading();
+                }
+            }
+
+            loadData();
         }
     }, [open, idSurvey]);
 
