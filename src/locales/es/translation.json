@@ -50,6 +50,8 @@
     "surveyCreated": "Encuesta creada con éxito!",
     "surveyEdited": "Encuesta editada con éxito!",
     "surveyDeleted": "Encuesta eliminada con éxito!",
+    "surveyActivated": "Encuesta activada con éxito!",
+    "surveyDeactivated": "Encuesta desactivada con exito!",
     "structuration": "Estructurar",
     "termsConditions": "Términos y Condiciones",
     "deathline": "Fecha Limite"
@@ -80,6 +82,10 @@
     "userCreated": "Usuario creado con éxito!",
     "userEdited": "Usuario editado con éxito!",
     "userDeleted": "Usuario eliminado con éxito!"
+  },
+
+  "tables": {
+    "state": "Estado"
   },
 
   "actions": {

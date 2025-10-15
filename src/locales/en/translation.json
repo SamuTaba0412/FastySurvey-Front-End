@@ -50,6 +50,8 @@
     "surveyCreated": "Survey created succesfully!",
     "surveyEdited": "Survey edited succesfully!",
     "surveyDeleted": "Survey deleted succesfully!",
+    "surveyActivated": "The survey has been successfully activated!",
+    "surveyDeactivated": "The survey has been successfully deactivated!",
     "structuration": "Structurate",
     "termsConditions": "Terms and Conditions",
     "deathline": "Deathline",
