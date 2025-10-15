@@ -81,14 +81,15 @@ const ListSurveys = () => {
             .filter(survey =>
                 survey.name.toLowerCase().includes(keyword) ||
                 survey.creationDate.toLowerCase().includes(keyword) ||
-                survey.configurationDate.toLowerCase().includes(keyword)
+                survey.configurationDate?.toLowerCase().includes(keyword)
             )
             .map(survey => ({
                 ...survey,
+                configurationDate: survey.configurationDate || 'N/A',
                 state: (
                     <Switch
                         checked={survey.state === 1}
-                        onChange={() => handleToggleState(survey.idSurvey, survey.state)}
+                        onChange={() => handleToggleState(survey.idSurvey)}
                         color="success"
                     />
                 )
@@ -269,6 +270,8 @@ const ListSurveys = () => {
                 open={openSurveyModal}
                 onClose={() => setOpenSurveyModal(false)}
                 idSurvey={idSurvey}
+                surveyList={surveyList}
+                setSurveyList={setSurveyList}
             />
         </>
     );

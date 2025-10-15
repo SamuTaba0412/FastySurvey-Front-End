@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { getData, postData, putData } from '../../utils/api/fetchMetods';
 import { toast } from 'react-toastify';
 
 import {
@@ -21,8 +23,9 @@ import { Close } from '@mui/icons-material';
 import PageModal from '../../components/PageModal';
 import createSurveySchema from '../../js/validations/surveys/surveySchema';
 
-const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
+const ModalSurveys = ({ idSurvey, open, onClose, surveyList, setSurveyList }) => {
     const { t } = useTranslation();
+    const { startLoading, stopLoading } = useLoader();
     const surveySchema = createSurveySchema(t);
 
     const initialSurveyState = {
@@ -57,8 +60,49 @@ const ModalSurveys = ({ idSurvey = 0, open, onClose }) => {
     const addSurvey = async () => {
         const res = validate(infoSurvey);
         if (!res.ok) return;
-        toast.success(t('survey.surveyCreated'));
-        onClose();
+
+        startLoading();
+
+        try {
+            const { status, dataResponse } = await postData(
+                `/surveys`,
+                {
+                    survey_name: infoSurvey.surveyName,
+                    creation_date: new Date().toISOString().split("T")[0],
+                    survey_state: 1,
+                    introductory_text: infoSurvey.introductionText || null,
+                    terms_conditions: infoSurvey.termsConditions || null,
+                }
+            );
+
+            if (status >= 200 && status < 300) {
+                const mappedSurvey = {
+                    idSurvey: dataResponse.id_survey,
+                    name: dataResponse.survey_name,
+                    state: dataResponse.survey_state,
+                    creationDate: dataResponse.creation_date,
+                    configurationDate: dataResponse.configuration_date
+                };
+
+                setSurveyList([
+                    ...surveyList,
+                    mappedSurvey
+                ]);
+
+                toast.success(t('survey.surveyCreated'));
+                onClose();
+            }
+            else if (status >= 400 && status < 500) {
+                toast.warning(`${status}: ${dataResponse.detail}`)
+            }
+        }
+        catch (err) {
+            console.log(err);
+            toast.error(t('navigation.sendError'));
+        }
+        finally {
+            stopLoading();
+        }
     };
 
     const editSurvey = async () => {
