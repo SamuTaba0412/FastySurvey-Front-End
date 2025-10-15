@@ -97,7 +97,6 @@ const ModalSurveys = ({ idSurvey, open, onClose, surveyList, setSurveyList }) =>
             }
         }
         catch (err) {
-            console.log(err);
             toast.error(t('navigation.sendError'));
         }
         finally {

@@ -1,5 +1,8 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useLoader } from '../../context/LoaderContext';
+import { getData } from '../../utils/api/fetchMetods';
+import { toast } from 'react-toastify';
 
 import {
     Button,
@@ -8,7 +11,8 @@ import {
     ListItemText,
     ListItemAvatar,
     Avatar,
-    Typography
+    Typography,
+    Skeleton
 } from '@mui/material';
 
 import {
@@ -21,8 +25,9 @@ import {
 
 import PageModal from '../../components/PageModal';
 
-const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
+const InfoSurveys = ({ idSurvey, open, onClose }) => {
     const { t } = useTranslation();
+    const { startLoading, stopLoading } = useLoader();
 
     const [expandIntroText, setExpandIntroText] = useState(false);
     const [expandTermsText, setExpandTermsText] = useState(false);
@@ -39,6 +44,7 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
         introductionText: "Con el objetivo de garantizar la excelencia en nuestros procesos y servicios, hemos diseñado la Encuesta Calidad #1. Su participación es fundamental para identificar oportunidades de mejora y mantener los más altos estándares de calidad. Agradecemos de antemano el tiempo dedicado a responder de manera objetiva y responsable. Sus aportes serán tratados con total confidencialidad y contribuirán directamente al fortalecimiento de nuestra gestión.",
         termsConditions: "Al participar en la Encuesta Calidad #1, usted acepta que sus respuestas serán utilizadas únicamente con fines de análisis interno y mejora de nuestros procesos y servicios. La información recolectada será tratada de manera confidencial y no será compartida con terceros ajenos a la organización. La participación es completamente voluntaria y usted podrá abstenerse de responder cualquier pregunta si así lo considera pertinente. Al continuar con la encuesta, confirma que ha leído y aceptado los presentes términos y condiciones."
     });
+    const [loadingSurveys, setLoadingSurveys] = useState(false);
 
     const introText = infoSurvey.introductionText || "";
     const isLongIntroText = introText.length > 120;
@@ -51,6 +57,42 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
     const displayTermsText = expandTermsText || !isLongTermsText
         ? termsText
         : termsText.slice(0, 120) + "...";
+
+    useEffect(() => {
+        if (!open) return;
+
+        startLoading();
+        setLoadingSurveys(true);
+
+        const loadData = async () => {
+            try {
+                const { status, dataResponse } = await getData(`/surveys/${idSurvey}`);
+
+                if (status >= 200 && status < 300) {
+                    const mappedSurvey = {
+                        surveyName: dataResponse.survey_name,
+                        creationDate: dataResponse.creation_date,
+                        configurationDate: dataResponse.configuration_date,
+                        introductionText: dataResponse.introduction_text,
+                        termsConditions: dataResponse.terms_conditions
+                    };
+
+                    setInfoSurvey(mappedSurvey);
+                }
+            }
+            catch (err) {
+                toast.error(err);
+            }
+            finally {
+                stopLoading();
+                setLoadingSurveys(false);
+            }
+        }
+
+        loadData();
+    }, [open, idSurvey]);
+
+    const renderText = (text) => loadingSurveys ? <Skeleton width="80%" /> : text;
 
     return (
         <>
@@ -84,7 +126,7 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                         </ListItemAvatar>
                         <ListItemText
                             primary={t('user.name') + ":"}
-                            secondary={`${infoSurvey.surveyName}`}
+                            secondary={renderText(infoSurvey.surveyName)}
                         />
                     </ListItem>
 
@@ -97,25 +139,29 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                         <ListItemText
                             primary={t('survey.introductionText') + ":"}
                             secondary={
-                                <>
-                                    <Typography variant="body2" component="span">
-                                        {displayIntroText}
-                                    </Typography>
-                                    {isLongIntroText && (
-                                        <Button
-                                            onClick={toggleIntroText}
-                                            color="info"
-                                            size="small"
-                                            disableRipple
-                                            sx={{
-                                                textTransform: "none",
-                                                '&:hover': { backgroundColor: "transparent" }
-                                            }}
-                                        >
-                                            {expandIntroText ? t('pagination.showLess') : t('pagination.showMore')}
-                                        </Button>
-                                    )}
-                                </>
+                                loadingSurveys ? (
+                                    <Skeleton width="80%" />
+                                ) : (
+                                    <>
+                                        <Typography variant="body2" component="span">
+                                            {displayIntroText || 'N/A'}
+                                        </Typography>
+                                        {isLongIntroText && (
+                                            <Button
+                                                onClick={toggleIntroText}
+                                                color="info"
+                                                size="small"
+                                                disableRipple
+                                                sx={{
+                                                    textTransform: "none",
+                                                    '&:hover': { backgroundColor: "transparent" }
+                                                }}
+                                            >
+                                                {expandIntroText ? t('pagination.showLess') : t('pagination.showMore')}
+                                            </Button>
+                                        )}
+                                    </>
+                                )
                             }
                         />
                     </ListItem>
@@ -129,30 +175,34 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                         <ListItemText
                             primary={t('survey.termsConditions') + ":"}
                             secondary={
-                                <>
-                                    <Typography variant="body2" component="span">
-                                        {displayTermsText}
-                                    </Typography>
-                                    {isLongTermsText && (
-                                        <Button
-                                            onClick={toggleTermsText}
-                                            color="info"
-                                            size="small"
-                                            disableRipple
-                                            sx={{
-                                                textTransform: "none",
-                                                '&:hover': { backgroundColor: "transparent" }
-                                            }}
-                                        >
-                                            {expandTermsText ? t('pagination.showLess') : t('pagination.showMore')}
-                                        </Button>
-                                    )}
-                                </>
+                                loadingSurveys ? (
+                                    <Skeleton width="80%" />
+                                ) : (
+                                    <>
+                                        <Typography variant="body2" component="span">
+                                            {displayTermsText || 'N/A'}
+                                        </Typography>
+                                        {isLongTermsText && (
+                                            <Button
+                                                onClick={toggleTermsText}
+                                                color="info"
+                                                size="small"
+                                                disableRipple
+                                                sx={{
+                                                    textTransform: "none",
+                                                    '&:hover': { backgroundColor: "transparent" }
+                                                }}
+                                            >
+                                                {expandTermsText ? t('pagination.showLess') : t('pagination.showMore')}
+                                            </Button>
+                                        )}
+                                    </>
+                                )
                             }
                         />
                     </ListItem>
 
-                    <ListItem>
+                    {/* <ListItem>
                         <ListItemAvatar>
                             <Avatar>
                                 <Add />
@@ -162,7 +212,7 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                             primary={t('user.createdBy') + ":"}
                             secondary={infoSurvey.createdBy}
                         />
-                    </ListItem>
+                    </ListItem> */}
 
                     <ListItem>
                         <ListItemAvatar>
@@ -172,11 +222,11 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                         </ListItemAvatar>
                         <ListItemText
                             primary={t('user.creationDate') + ":"}
-                            secondary={infoSurvey.creationDate.toDateString()}
+                            secondary={renderText(infoSurvey.creationDate)}
                         />
                     </ListItem>
 
-                    <ListItem>
+                    {/* <ListItem>
                         <ListItemAvatar>
                             <Avatar>
                                 <Settings />
@@ -186,7 +236,7 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                             primary={t('user.configuratedBy') + ":"}
                             secondary={infoSurvey.configuredBy}
                         />
-                    </ListItem>
+                    </ListItem> */}
 
                     <ListItem>
                         <ListItemAvatar>
@@ -196,7 +246,7 @@ const InfoSurveys = ({ idSurvey = 0, open, onClose }) => {
                         </ListItemAvatar>
                         <ListItemText
                             primary={t('user.configurationDate') + ":"}
-                            secondary={infoSurvey.configurationDate.toDateString()}
+                            secondary={renderText(infoSurvey.configurationDate || 'N/A')}
                         />
                     </ListItem>
                 </List>
